@@ -1,4 +1,4 @@
-package ru.project.viviv.entity;
+package ru.project.viviv.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -14,12 +14,12 @@ import java.util.UUID;
 @Data
 public class Interest {
     @Id
-    String interest_id = UUID.randomUUID().toString();
+    private String interest_id = UUID.randomUUID().toString();
     @Column
-    String interest;
+    private String interest;
 
     @JsonIgnore
     @ToString.Exclude
     @ManyToMany(mappedBy = "interests")
-    List<Profile> profiles = new ArrayList<>();
+    private List<Profile> profiles = new ArrayList<>();
 }

@@ -1,9 +1,9 @@
-package ru.project.viviv.service;
+package ru.project.viviv.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.project.viviv.entity.Profile;
-import ru.project.viviv.repository.ProfileRepository;
+import ru.project.viviv.model.entity.Profile;
+import ru.project.viviv.model.repository.ProfileRepository;
 
 import java.util.List;
 
