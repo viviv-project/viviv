@@ -13,13 +13,20 @@ import java.util.UUID;
 @Table(name = "vi_interest")
 @Data
 public class Interest {
+
     @Id
-    String interest_id = UUID.randomUUID().toString();
+    @Column(name = "interest_id")
+    String id = UUID.randomUUID().toString();
+
     @Column
     String interest;
 
-    @JsonIgnore
+//    @JsonIgnore
+//    @ToString.Exclude
+//    @ManyToMany(mappedBy = "interests")
+//    List<Profile> profiles = new ArrayList<>();
+
     @ToString.Exclude
-    @ManyToMany(mappedBy = "interests")
-    List<Profile> profiles = new ArrayList<>();
+    @OneToMany(mappedBy = "interest", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<InterestConnection> interestConnections = new ArrayList<>();
 }

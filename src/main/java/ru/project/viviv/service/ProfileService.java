@@ -19,4 +19,12 @@ public class ProfileService {
     public List<Profile> getAllProfiles(){
         return profileRepository.findAll();
     }
+
+    public void removeProfile(Profile profile){
+        profileRepository.delete(profile);
+    }
+
+    public void removeProfileById(String id){
+        profileRepository.deleteById(id);
+    }
 }

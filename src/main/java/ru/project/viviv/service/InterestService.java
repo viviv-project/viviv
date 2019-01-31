@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.project.viviv.entity.Interest;
 import ru.project.viviv.repository.InterestRepository;
 
-import java.util.UUID;
-
 @Service
 public class InterestService {
     @Autowired
@@ -16,7 +14,7 @@ public class InterestService {
         interestRepository.save(interest);
     }
 
-    public Interest getInterestById(UUID id){
+    public Interest getInterestById(String id){
         return interestRepository.findById(id).orElse(null);
     }
 }
