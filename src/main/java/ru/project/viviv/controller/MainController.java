@@ -5,9 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.project.viviv.model.entity.Interest;
-import ru.project.viviv.model.entity.InterestConnection;
-import ru.project.viviv.model.entity.Profile;
+import ru.project.viviv.model.entity.*;
 import ru.project.viviv.model.service.InterestService;
 import ru.project.viviv.model.service.ProfileService;
 
@@ -45,6 +43,28 @@ public class MainController {
         profile.getInterestConnections().add(interestConnection);
         profileService.createProfile(profile);
         System.out.println("done");
+    }
+
+    @RequestMapping(value = "/friends", method = RequestMethod.POST)
+    public List<Profile> friends(){
+        Profile profile1 = new Profile();
+        Profile profile2 = new Profile();
+        profile1.setFirstname("Source friend");
+        profile2.setFirstname("Target friend");
+        profileService.createProfile(profile1);
+        profileService.createProfile(profile2);
+
+        FriendSource friendSource = new FriendSource();
+        friendSource.setProfile(profile1);
+        FriendTarget friendTarget = new FriendTarget();
+        friendTarget.setFriendSource(friendSource);
+        friendTarget.setProfile(profile2);
+        friendSource.getTargetFriends().add(friendTarget);
+        profile1.getSourceFriends().add(friendSource);
+        profileService.createProfile(profile1);
+        profile2.getFriendTargets().add(friendTarget);
+        profileService.createProfile(profile2);
+        return getAllProfiles();
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)

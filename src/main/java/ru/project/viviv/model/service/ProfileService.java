@@ -27,4 +27,8 @@ public class ProfileService {
     public void removeProfileById(String id){
         profileRepository.deleteById(id);
     }
+
+    public List<Profile> findAllByFirstname(String firstname){
+        return profileRepository.findAllByFirstname(firstname);
+    }
 }

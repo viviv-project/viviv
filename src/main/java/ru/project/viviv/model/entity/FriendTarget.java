@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Entity
 @Table(name = "vi_friend_target")
@@ -14,15 +15,15 @@ public class FriendTarget {
 
     @Id
     @Column(name = "friend_target_id")
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private String id;
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id = UUID.randomUUID().toString();
 
     @Column
     @Enumerated(EnumType.STRING)
     private FriendStatus status = FriendStatus.REQUEST;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     @NotNull
     @JoinColumn(name = "user_id")
