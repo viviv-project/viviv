@@ -1,17 +1,17 @@
 package ru.project.viviv.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.project.viviv.entity.Interest;
-import ru.project.viviv.entity.InterestConnection;
-import ru.project.viviv.entity.Profile;
-import ru.project.viviv.service.InterestService;
-import ru.project.viviv.service.ProfileService;
+import ru.project.viviv.model.entity.Interest;
+import ru.project.viviv.model.entity.InterestConnection;
+import ru.project.viviv.model.entity.Profile;
+import ru.project.viviv.model.service.InterestService;
+import ru.project.viviv.model.service.ProfileService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,6 +38,8 @@ public class MainController {
         interest1.setInterest("чтение");
         InterestConnection interestConnection = new InterestConnection();
         interestConnection.setInterest(interest);
+        interestService.saveInterest(interest);
+        interestService.saveInterest(interest1);
         interestConnection.setProfile(profile);
         interest.getInterestConnections().add(interestConnection);
         profile.getInterestConnections().add(interestConnection);
@@ -54,5 +56,12 @@ public class MainController {
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public void removeProfileById(){
         profileService.removeProfileById("ee864eca-bdde-45af-9ae2-d214489abb7a");
+    }
+
+    @RequestMapping(value = "/interest/{interest}", method = RequestMethod.POST)
+    public void createInterest(@PathVariable("interest") String strInterest){
+        Interest interest = new Interest();
+        interest.setInterest(strInterest);
+        interestService.saveInterest(interest);
     }
 }
