@@ -1,13 +1,14 @@
-package ru.project.viviv.entity;
+package ru.project.viviv.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
+import ru.project.viviv.model.entity.InterestConnection;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "vi_interest")
@@ -16,15 +17,13 @@ public class Interest {
 
     @Id
     @Column(name = "interest_id")
-    String id = UUID.randomUUID().toString();
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
 
     @Column
-    String interest;
-
-//    @JsonIgnore
-//    @ToString.Exclude
-//    @ManyToMany(mappedBy = "interests")
-//    List<Profile> profiles = new ArrayList<>();
+    @NotNull
+    private String interest;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "interest", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
