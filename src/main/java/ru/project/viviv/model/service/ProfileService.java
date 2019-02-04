@@ -5,12 +5,15 @@ import org.springframework.stereotype.Service;
 import ru.project.viviv.model.entity.Profile;
 import ru.project.viviv.model.repository.ProfileRepository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
 public class ProfileService {
     @Autowired
     ProfileRepository profileRepository;
+    @Autowired
+    EntityManager entityManager;
 
     public void createProfile(Profile profile){
         profileRepository.save(profile);

@@ -56,14 +56,18 @@ public class MainController {
 
         FriendSource friendSource = new FriendSource();
         friendSource.setProfile(profile1);
+
         FriendTarget friendTarget = new FriendTarget();
         friendTarget.setFriendSource(friendSource);
         friendTarget.setProfile(profile2);
         friendSource.getTargetFriends().add(friendTarget);
+
         profile1.getSourceFriends().add(friendSource);
         profileService.createProfile(profile1);
+
         profile2.getFriendTargets().add(friendTarget);
         profileService.createProfile(profile2);
+
         return getAllProfiles();
     }
 

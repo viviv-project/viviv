@@ -60,6 +60,6 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<FriendTarget> friendTargets = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//    private List<UserQuestions> userQuestions = new ArrayList<>();
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<UserQuestion> userQuestions = new ArrayList<>();
 }
