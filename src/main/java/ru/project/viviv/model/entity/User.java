@@ -21,19 +21,18 @@ public class User {
     private String id;
 
     @NotNull
-    @Column(unique = true)
-    private String login;
-
-    @NotNull
     @Column
     private String password;
+
+    @Column(name = "matching_password")
+    private String matchingPassword;
+
+    @Column
+    private String username;
 
     @NotNull
     @Column(unique = true)
     private String email;
-
-    @OneToOne(mappedBy = "user")
-    private Profile profile;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

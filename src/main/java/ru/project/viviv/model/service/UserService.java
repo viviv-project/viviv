@@ -2,9 +2,15 @@ package ru.project.viviv.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.project.viviv.model.dto.UserDTO;
+import ru.project.viviv.model.entity.Role;
+import ru.project.viviv.model.entity.RoleConnection;
 import ru.project.viviv.model.entity.User;
+import ru.project.viviv.model.repository.RoleRepository;
 import ru.project.viviv.model.repository.UserRepository;
+import ru.project.viviv.validation.EmailExistsException;
 
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -12,6 +18,8 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
     public void createUser(@NotNull User user) {
         userRepository.save(user);
@@ -29,11 +37,33 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public List<User> findAllByEmail(@NotNull String email) {
-        return userRepository.findAllByEmail(email);
+    public User findByEmail(@NotNull String email) {
+        return userRepository.findByEmail(email);
     }
 
     public User getUserById(@NotNull String id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public User registerNewUserAccount(UserDTO accountDto) throws EmailExistsException {
+
+        if (emailExists(accountDto.getEmail())) {
+            throw new EmailExistsException("Пользователь с таким email уже существует: " + accountDto.getEmail());
+        }
+        User user = new User();
+        user.setUsername(accountDto.getUsername());
+        user.setPassword(accountDto.getPassword());
+        user.setEmail(accountDto.getEmail());
+        RoleConnection roleConnection = new RoleConnection();
+        Role role = roleRepository.findByRole("USER");
+        roleConnection.setRole(role);
+        user.getRoleConnections().add(roleConnection);
+        return userRepository.save(user);
+    }
+
+    private boolean emailExists(String email) {
+        User user = userRepository.findByEmail(email);
+        return user != null;
     }
 }
