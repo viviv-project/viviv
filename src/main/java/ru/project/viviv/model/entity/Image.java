@@ -1,26 +1,27 @@
 package ru.project.viviv.model.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "vi_images")
+@Table(name = "vi_image")
 @Data
 public class Image {
 
     @Id
-    private String image_id = UUID.randomUUID().toString();
+    @Column(name = "image_id")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
 
     @Column
+    @NotNull
     private String image;
     @Column
     private String description;
     @Column
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Profile profile;
 }

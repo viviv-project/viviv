@@ -2,10 +2,10 @@ package ru.project.viviv.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.project.viviv.model.entity.Interest;
+import ru.project.viviv.model.entity.Role;
 
 @Repository
-public interface InterestRepository extends JpaRepository<Interest, String> {
+public interface RoleRepository extends JpaRepository<Role, String> {
 
-    Interest findByInterest(String name);
+    Role findByRole(String name);
 }

@@ -1,23 +1,22 @@
 package ru.project.viviv.model.entity;
 
+
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "vi_interest")
+@Table(name = "vi_answer")
 @Data
-public class Interest {
+public class Answer {
 
     @Id
-    @Column(name = "interest_id")
+    @Column(name = "answer_id")
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     @Column
-    @NotNull
-    private String interest;
+    private String answer;
 }

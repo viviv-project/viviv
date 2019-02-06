@@ -4,8 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.project.viviv.model.entity.Profile;
 
-import java.util.UUID;
+import java.util.List;
 
 @Repository
-public interface ProfileRepository extends JpaRepository<Profile, UUID> {
+public interface ProfileRepository extends JpaRepository<Profile, String> {
+
+    List<Profile> findAllByFirstname(String firstname);
+
+    List<Profile> findAllByOrderByDateAddedDesc();
 }
