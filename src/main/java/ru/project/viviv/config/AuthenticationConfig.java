@@ -1,15 +1,20 @@
 package ru.project.viviv.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.project.viviv.model.service.CustomUserDetailsService;
+import ru.project.viviv.model.service.RoleService;
+import ru.project.viviv.model.service.UserService;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -25,12 +30,17 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .and()
+                .exceptionHandling().accessDeniedPage("/accessDenied")
+                .and()
                 .formLogin()
-                .loginPage("/login/")
-//                .loginProcessingUrl("/user/registration")
+                .loginPage("/login")
+                .loginProcessingUrl("/loginAction")
+//              .loginProcessingUrl("/user/registration")
                 .successHandler(customAuthenticationSuccessHandler)
                 .permitAll();
     }
+
 }

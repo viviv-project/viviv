@@ -16,6 +16,7 @@ public class UserDTO {
     private String password;
     private String matchingPassword;
     private String username;
+    private String matchingUsername;
     @ValidEmail
     @NotNull
     @NotEmpty
