@@ -1,9 +1,6 @@
 package ru.project.viviv.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -13,7 +10,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "vi_profile")
@@ -44,22 +40,27 @@ public class Profile {
     @CreationTimestamp
     private LocalDateTime dateAdded;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "profile", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<InterestConnection> interestConnections = new ArrayList<>();
 
-//    @ToString.Exclude
-//    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Image> images = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Image> images = new ArrayList<>();
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<FriendSource> sourceFriends = new ArrayList<>();
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<FriendTarget> friendTargets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<UserQuestion> userQuestions = new ArrayList<>();
 }

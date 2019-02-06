@@ -1,9 +1,7 @@
 package ru.project.viviv.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import ru.project.viviv.model.entity.Interest;
 
 import javax.persistence.*;
 
@@ -19,12 +17,6 @@ public class InterestConnection {
     private String id;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "user_id")
-    private Profile profile;
-
-    @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "interest_id")
     private Interest interest;
 }

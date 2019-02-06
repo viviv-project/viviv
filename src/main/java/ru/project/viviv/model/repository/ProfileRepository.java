@@ -10,4 +10,6 @@ import java.util.List;
 public interface ProfileRepository extends JpaRepository<Profile, String> {
 
     List<Profile> findAllByFirstname(String firstname);
+
+    List<Profile> findAllByOrderByDateAddedDesc();
 }

@@ -6,6 +6,7 @@ import ru.project.viviv.model.entity.Profile;
 import ru.project.viviv.model.repository.ProfileRepository;
 
 import javax.persistence.EntityManager;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
@@ -15,23 +16,27 @@ public class ProfileService {
     @Autowired
     EntityManager entityManager;
 
-    public void createProfile(Profile profile){
+    public void createProfile(@NotNull Profile profile) {
         profileRepository.save(profile);
     }
 
-    public List<Profile> getAllProfiles(){
+    public List<Profile> getAllProfiles() {
         return profileRepository.findAll();
     }
 
-    public void removeProfile(Profile profile){
+    public void removeProfile(@NotNull Profile profile) {
         profileRepository.delete(profile);
     }
 
-    public void removeProfileById(String id){
+    public void removeProfileById(@NotNull String id) {
         profileRepository.deleteById(id);
     }
 
-    public List<Profile> findAllByFirstname(String firstname){
+    public List<Profile> findAllByFirstname(@NotNull String firstname) {
         return profileRepository.findAllByFirstname(firstname);
+    }
+
+    public List<Profile> findAllSortedByDate() {
+        return profileRepository.findAllByOrderByDateAddedDesc();
     }
 }

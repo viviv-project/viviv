@@ -1,6 +1,5 @@
 package ru.project.viviv.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -8,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "vi_images")
+@Table(name = "vi_image")
 @Data
 public class Image {
 
@@ -25,9 +24,4 @@ public class Image {
     private String description;
     @Column
     private String name;
-
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "user_id")
-    private Profile profile;
 }

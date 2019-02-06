@@ -24,5 +24,4 @@ public class ControllerLogging {
 
         return result;
     }
-
 }
