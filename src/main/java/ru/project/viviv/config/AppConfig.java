@@ -7,11 +7,16 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 @Configuration
 public class AppConfig extends WebMvcAutoConfiguration {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        if (!registry.hasMappingForPattern("/webjars/**")) {
+      /*  if (!registry.hasMappingForPattern("/webjars/**")) {
             registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         }
         if (!registry.hasMappingForPattern("/images/**")) {
             registry.addResourceHandler("/images/**").addResourceLocations("file:images/");
-        }
+        }*/
+//        @Override
+//        public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+            registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+//        }
     }
+
 }
