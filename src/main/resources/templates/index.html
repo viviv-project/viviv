@@ -2,13 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Test</title>
+    <title>Портыл для общения ::VIVIV::</title>
+    <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
+<div th:replace="fragments/header :: header"/>
     Start page
 
-<form method="post" action="/friends">
+<form method="get" th:action="@{/user/user}">
+        <button type ="submit">Страница пользователя</button>
+</form>
+    <br>
+    <form method="get" th:action="@{/registration}">
+        <button type ="submit">Регистрация нового пользователя</button>
+    </form>
+
+<br>
+<form method="post" action="/user/friends">
     <button type ="submit">Friends</button>
 </form>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

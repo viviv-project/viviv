@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.project.viviv.model.dto.UserDTO;
 import ru.project.viviv.model.entity.Role;
@@ -27,6 +28,8 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void createUser(@NotNull User user) {
         userRepository.save(user);
@@ -60,7 +63,7 @@ public class UserService {
         }
         User user = new User();
         user.setUsername(accountDto.getUsername());
-        user.setPassword(accountDto.getPassword());
+        user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
         user.setEmail(accountDto.getEmail());
         RoleConnection roleConnection = new RoleConnection();
         Role role = roleRepository.findByRole("USER");

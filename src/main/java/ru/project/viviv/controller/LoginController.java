@@ -10,11 +10,13 @@ public class LoginController {
     public String showMyLoginPage() {
         return "login";
     }
+/*
 
     @GetMapping("/accessDenied")
     public String showAccessDeniedPage() {
         return "access-denied";
     }
+*/
 
     @GetMapping("/principal-info")
     public String showPrincipalInfoPage() {
