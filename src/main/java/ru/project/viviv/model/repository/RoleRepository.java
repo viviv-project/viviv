@@ -8,4 +8,5 @@ import ru.project.viviv.model.entity.Role;
 public interface RoleRepository extends JpaRepository<Role, String> {
 
     Role findByRole(String name);
+
 }

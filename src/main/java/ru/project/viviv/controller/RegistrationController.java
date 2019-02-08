@@ -22,14 +22,14 @@ public class RegistrationController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/user/registration", method = RequestMethod.GET)
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String showRegistrationForm(WebRequest request, Model model) {
         UserDTO userDto = new UserDTO();
         model.addAttribute("user", userDto);
         return "/registration";
     }
 
-    @RequestMapping(value = "/user/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView registerUserAccount(
             @ModelAttribute("user") @Valid UserDTO accountDto,
             BindingResult result,

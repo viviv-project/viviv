@@ -1,6 +1,12 @@
 package ru.project.viviv.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.project.viviv.model.dto.UserDTO;
 import ru.project.viviv.model.entity.Role;
@@ -12,7 +18,9 @@ import ru.project.viviv.validation.EmailExistsException;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -20,6 +28,8 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void createUser(@NotNull User user) {
         userRepository.save(user);
@@ -53,7 +63,7 @@ public class UserService {
         }
         User user = new User();
         user.setUsername(accountDto.getUsername());
-        user.setPassword(accountDto.getPassword());
+        user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
         user.setEmail(accountDto.getEmail());
         RoleConnection roleConnection = new RoleConnection();
         Role role = roleRepository.findByRole("USER");
@@ -66,4 +76,6 @@ public class UserService {
         User user = userRepository.findByEmail(email);
         return user != null;
     }
+
+
 }
