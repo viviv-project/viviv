@@ -22,7 +22,17 @@ public class Profile {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @NotNull(message = "не может быть пустым")
+    @NotNull
+    @Column
+    private String password;
+
+    @Column
+    private String username;
+
+    @NotNull
+    @Column(unique = true)
+    private String email;
+
     @Column
     @Size(min = 1)
     private String firstname;
@@ -48,19 +58,15 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private List<Image> images = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<FriendSource> sourceFriends = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private List<FriendTarget> friendTargets = new ArrayList<>();
+    private List<Friend> friends = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<UserQuestion> userQuestions = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<RoleConnection> roleConnections = new ArrayList<>();
 }

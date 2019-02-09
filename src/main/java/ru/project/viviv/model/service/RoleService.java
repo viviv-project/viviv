@@ -3,6 +3,7 @@ package ru.project.viviv.model.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.project.viviv.model.entity.Role;
+import ru.project.viviv.model.entity.RoleStatus;
 import ru.project.viviv.model.repository.RoleRepository;
 
 import javax.validation.constraints.NotNull;
@@ -21,8 +22,8 @@ public class RoleService {
         return roleRepository.findById(id).orElse(null);
     }
 
-    public Role getRoleByName(@NotNull String name) {
-        return roleRepository.findByRole(name);
+    public Role getRoleByStatus(@NotNull RoleStatus status) {
+        return roleRepository.findByStatus(status);
     }
 
     public List<Role> getAllRoles() {

@@ -1,25 +1,18 @@
 package ru.project.viviv.model.entity;
 
-
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "vi_role")
+@Table(name = "vi_friend")
 @Data
-public class Role {
+public class Friend {
 
     @Id
-    @Column(name = "role_id")
+    @Column(name = "friend_id")
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
-
-    @Column
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private RoleStatus status = RoleStatus.USER;
 }
