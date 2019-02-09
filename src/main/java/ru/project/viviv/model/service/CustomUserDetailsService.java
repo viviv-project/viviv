@@ -8,8 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.project.viviv.model.entity.User;
-import ru.project.viviv.model.repository.UserRepository;
+import ru.project.viviv.model.entity.Profile;
+import ru.project.viviv.model.entity.RoleStatus;
+import ru.project.viviv.model.repository.ProfileRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +20,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
-    private UserRepository userRepository;
+    private ProfileRepository profileRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
+        Profile profile = profileRepository.findByEmail(email);
+        if (profile == null) {
             throw new UsernameNotFoundException(
                     "Пользователя с таким email не найдено: " + email);
         }
@@ -35,16 +35,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
         return new org.springframework.security.core.userdetails.User
-                (user.getEmail(),
-                        user.getPassword(), enabled, accountNonExpired,
+                (profile.getEmail(),
+                        profile.getPassword(), enabled, accountNonExpired,
                         credentialsNonExpired, accountNonLocked,
-                        getAuthorities(user.getRoleConnections().stream().map(roleConnection -> roleConnection.getRole().getRole()).collect(Collectors.toList())));
+                        getAuthorities(profile.getRoleConnections().stream().map(roleConnection -> roleConnection.getRole().getStatus()).collect(Collectors.toList())));
     }
 
-    private static List<GrantedAuthority> getAuthorities(List<String> roles) {
+    private static List<GrantedAuthority> getAuthorities(List<RoleStatus> roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role));
+        for (RoleStatus role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.name()));
         }
         return authorities;
     }

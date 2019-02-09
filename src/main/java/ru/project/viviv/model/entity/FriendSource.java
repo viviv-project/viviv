@@ -1,8 +1,6 @@
 package ru.project.viviv.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -24,9 +22,11 @@ public class FriendSource {
     @Enumerated(EnumType.STRING)
     private FriendStatus status = FriendStatus.REQUEST;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Profile profile;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "friend_source_id")
-    @ToString.Exclude
-    @JsonIgnore
-    private List<FriendTarget> friendTargets = new ArrayList<>();
+    private List<Friend> friends = new ArrayList<>();
 }

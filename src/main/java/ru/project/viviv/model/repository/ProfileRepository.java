@@ -12,4 +12,6 @@ public interface ProfileRepository extends JpaRepository<Profile, String> {
     List<Profile> findAllByFirstname(String firstname);
 
     List<Profile> findAllByOrderByDateAddedDesc();
+
+    Profile findByEmail(String email);
 }

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import ru.project.viviv.model.dto.UserDTO;
-import ru.project.viviv.model.entity.User;
-import ru.project.viviv.model.service.UserService;
+import ru.project.viviv.model.entity.Profile;
+import ru.project.viviv.model.service.ProfileService;
 import ru.project.viviv.validation.EmailExistsException;
 
 import javax.validation.Valid;
@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Controller
 public class RegistrationController {
     @Autowired
-    UserService userService;
+    private ProfileService profileService;
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String showRegistrationForm(WebRequest request, Model model) {
@@ -36,7 +36,7 @@ public class RegistrationController {
             WebRequest request,
             Errors errors) {
 
-        User registered = new User();
+        Profile registered = new Profile();
         if (!result.hasErrors()) {
             registered = createUserAccount(accountDto, result);
         }
@@ -50,10 +50,10 @@ public class RegistrationController {
         }
     }
 
-    private User createUserAccount(UserDTO accountDto, BindingResult result) {
-        User registered;
+    private Profile createUserAccount(UserDTO accountDto, BindingResult result) {
+        Profile registered;
         try {
-            registered = userService.registerNewUserAccount(accountDto);
+            registered = profileService.registerNewUserAccount(accountDto);
         } catch (EmailExistsException e) {
             return null;
         }
