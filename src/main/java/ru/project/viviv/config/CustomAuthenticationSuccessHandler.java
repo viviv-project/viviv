@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import ru.project.viviv.model.entity.Profile;
-import ru.project.viviv.model.service.ProfileService;
+import ru.project.viviv.model.entity.User;
+import ru.project.viviv.model.service.UserService;
 import ru.project.viviv.system.ControllerLogging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.io.IOException;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
-    private ProfileService profileService;
+    private UserService userService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ControllerLogging.class);
 
@@ -27,9 +27,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String email = authentication.getName();
         LOGGER.info(email + " в onAuthenticationSuccess");
-        Profile profile = profileService.findByEmail(email);
+        User user = userService.findByEmail(email);
         HttpSession session = request.getSession();
-        session.setAttribute("user", profile);
+        session.setAttribute("user", user);
         response.sendRedirect(request.getContextPath() + "/");
     }
 }

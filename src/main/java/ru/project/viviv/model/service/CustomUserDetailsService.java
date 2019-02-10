@@ -8,9 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.project.viviv.model.entity.Profile;
 import ru.project.viviv.model.entity.RoleStatus;
-import ru.project.viviv.model.repository.ProfileRepository;
+import ru.project.viviv.model.entity.User;
+import ru.project.viviv.model.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,25 +20,32 @@ import java.util.stream.Collectors;
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
-    private ProfileRepository profileRepository;
+    private UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException {
 
-        Profile profile = profileRepository.findByEmail(email);
-        if (profile == null) {
-            throw new UsernameNotFoundException(
-                    "Пользователя с таким email не найдено: " + email);
-        }
-        boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
-        return new org.springframework.security.core.userdetails.User
-                (profile.getEmail(),
-                        profile.getPassword(), enabled, accountNonExpired,
-                        credentialsNonExpired, accountNonLocked,
-                        getAuthorities(profile.getRoleConnections().stream().map(roleConnection -> roleConnection.getRole().getStatus()).collect(Collectors.toList())));
+        try {
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
+                throw new UsernameNotFoundException(
+                        "No user found with username: " + email);
+            }
+
+            return new org.springframework.security.core.userdetails.User(
+                    user.getEmail(),
+                    user.getPassword().toLowerCase(),
+                    user.isEnabled(),
+                    accountNonExpired,
+                    credentialsNonExpired,
+                    accountNonLocked,
+                    getAuthorities(user.getRoleConnections().stream().map(roleConnection -> roleConnection.getRole().getStatus()).collect(Collectors.toList())));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static List<GrantedAuthority> getAuthorities(List<RoleStatus> roles) {
