@@ -41,4 +41,8 @@ public class User {
         super();
         this.enabled=false;
     }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private VerificationToken verificationTokens;
 }

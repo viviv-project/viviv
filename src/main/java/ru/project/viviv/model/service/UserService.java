@@ -33,7 +33,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void removeUser(@NotNull User user) {
+        public void removeUser(@NotNull User user) {
         userRepository.delete(user);
     }
 
