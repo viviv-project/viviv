@@ -15,4 +15,12 @@ public class Friend {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
+
+    @ManyToOne
+    @JoinColumn(name = "friend_source_id")
+    private FriendSource friendSource;
+
+    @ManyToOne
+    @JoinColumn(name = "friend_target_id")
+    private FriendTarget friendTarget;
 }

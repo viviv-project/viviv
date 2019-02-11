@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>PERSON-EDIT</title>
+</head>
+<body>
+
+<form th:action="@{/admin/user-save}"
+      th:object="${user}" method="POST">
+
+    <table width="100%" cellspacing="10" cellpadding="10" border="1" style="border-collapse: collapse;">
+        <tr>
+            <td width="200" nowrap="nowrap">ID:</td>
+            <td width="100%"><label th:text="*{id}" /></td>
+        </tr>
+        <tr>
+            <td>
+                User Name:
+            </td>
+            <td >
+                <input type="text" size="100" th:field="*{username}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Email:
+            </td>
+            <td >
+                <input type="text" size="100" th:field="*{email}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Role:
+            </td>
+            <td >
+                <input type="text" size="100" th:field="*{roleConnections}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Active:
+            </td>
+            <td>
+                <input type="checkbox" th:checked="*{isEnabled()}" />
+            </td>
+        </tr>
+    </table>
+
+    <br/>
+    <button type="submit" style="font-size: 2em;" >SAVE</button>
+
+</form>
+
+</body>
+</html>

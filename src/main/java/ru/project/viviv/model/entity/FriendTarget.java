@@ -4,8 +4,6 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "vi_friend_target")
@@ -24,9 +22,5 @@ public class FriendTarget {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Profile profile;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "friend_target_id")
-    private List<Friend> friends = new ArrayList<>();
+    private User user;
 }
