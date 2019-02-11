@@ -41,4 +41,7 @@ public class User {
         super();
         this.enabled=false;
     }
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private VerificationToken verificationTokens;
 }

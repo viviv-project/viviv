@@ -51,7 +51,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private static List<GrantedAuthority> getAuthorities(List<RoleStatus> roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (RoleStatus role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.name()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.name()));
         }
         return authorities;
     }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import ru.project.viviv.model.entity.Role;
 import ru.project.viviv.model.entity.User;
 import ru.project.viviv.model.service.UserService;
 import ru.project.viviv.system.ControllerLogging;

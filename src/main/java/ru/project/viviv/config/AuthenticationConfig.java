@@ -36,9 +36,13 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/","/index","/about","/registration","/registrationConfirm/**","/webjars/**").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user**").hasRole("USER")
+                .antMatchers("/",
+                                          "/index",
+                                          "/about",
+                                          "/registration",
+                                          "/webjars/**")   .permitAll()
+                .antMatchers("/admin/**")    .access("hasRole('ADMIN')")
+                .antMatchers("/user/**")     .access("hasRole('USER') or hasRole('ADMIN')")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -48,13 +52,9 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-      //          .logoutUrl("/logout")
                 .permitAll()
-                .and()
-                .csrf()//Disabled CSRF protection
-                .disable();
-//                .and()
-//                .exceptionHandling()
+                .and().csrf()//Disabled CSRF protection
+                .and().exceptionHandling().accessDeniedPage("/accessDenied");
 //                .accessDeniedHandler(accessDeniedHandler);
 
     }
@@ -71,6 +71,5 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
-
 
 }

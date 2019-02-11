@@ -17,6 +17,7 @@ public class AppConfig extends WebMvcAutoConfiguration {
             registry.addResourceHandler("/images/**").addResourceLocations("file:images/");
         }
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+
     }
 
     @Bean
