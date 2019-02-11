@@ -8,10 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import ru.project.viviv.model.dto.OnRegistrationCompleteEvent;
@@ -78,9 +75,9 @@ public class RegistrationController {
         return registered;
     }
 
-    @RequestMapping(value = "/regitrationConfirm", method = RequestMethod.GET)
+    @RequestMapping(value = "/registrationConfirm/{token}", method = RequestMethod.GET)
     public String confirmRegistration
-            (WebRequest request, Model model, @RequestParam("token") String token) {
+            (WebRequest request, Model model, @PathVariable String token) {
 
         Locale locale = request.getLocale();
 
@@ -88,19 +85,19 @@ public class RegistrationController {
         if (verificationToken == null) {
             String message = messages.getMessage("auth.message.invalidToken", null, locale);
             model.addAttribute("message", message);
-            return "redirect:/badUser.html?lang=" + locale.getLanguage();
+            return "redirect:/badUser";
         }
 
         User user = verificationToken.getUser();
-        Calendar cal = Calendar.getInstance();
-        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-            String messageValue = messages.getMessage("auth.message.expired", null, locale);
-            model.addAttribute("message", messageValue);
-            return "redirect:/badUser.html?lang=" + locale.getLanguage();
-        }
+//        Calendar cal = Calendar.getInstance();
+//        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+//            String messageValue = messages.getMessage("auth.message.expired", null, locale);
+//            model.addAttribute("message", messageValue);
+//            return "redirect:/badUser";
+//        }
 
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
-        return "redirect:/login.html?lang=" + request.getLocale().getLanguage();
+        return "redirect:/login";
     }
 }

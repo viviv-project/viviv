@@ -1,6 +1,7 @@
 package ru.project.viviv.model.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name = "vi_token")
 @Data
+@NoArgsConstructor
 public class VerificationToken {
     private static final int EXPIRATION = 60 * 24;
 

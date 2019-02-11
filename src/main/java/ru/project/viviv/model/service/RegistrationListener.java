@@ -2,6 +2,7 @@ package ru.project.viviv.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
@@ -26,6 +27,9 @@ public class RegistrationListener implements
     @Autowired
     private JavaMailSender mailSender;
 
+    @Value("${spring.mail.username}")
+    private String username;
+
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
         this.confirmRegistration(event);
@@ -37,15 +41,14 @@ public class RegistrationListener implements
         userService.createVerificationToken(user, token);
 
         String recipientAddress = user.getEmail();
-        String subject = "Registration Confirmation";
-        String confirmationUrl
-                = event.getAppUrl() + "/regitrationConfirm.html?token=" + token;
-//        String message = messages.getMessage("message.regSucc", null, event.getLocale());
+        String subject = "Подтверждение регистрации";
+        String confirmationUrl = "/registrationConfirm/" + token;
 
         SimpleMailMessage email = new SimpleMailMessage();
+        email.setFrom(username);
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText("Подтвердите свой email " + "http://localhost:8080" + confirmationUrl);
+        email.setText("Пройдите по ссылке для подтверждения email " + "http://localhost:8080" + confirmationUrl);
         mailSender.send(email);
     }
 }
