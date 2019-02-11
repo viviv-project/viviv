@@ -42,6 +42,7 @@ public class User {
         this.enabled=false;
     }
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private VerificationToken verificationTokens;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private VerificationToken token;
 }
