@@ -81,11 +81,9 @@ public class RegistrationController {
     public String confirmRegistration
             (WebRequest request, Model model, @PathVariable String token) {
 
-        Locale locale = request.getLocale();
-
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
-            String message = messages.getMessage("auth.message.invalidToken", null, locale);
+            String message = messages.getMessage("auth.message.invalidToken", null, null);
             model.addAttribute("message", message);
             return "redirect:/badUser";
         }

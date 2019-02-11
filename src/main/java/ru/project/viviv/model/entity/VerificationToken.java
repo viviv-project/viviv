@@ -1,7 +1,9 @@
 package ru.project.viviv.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -30,9 +32,10 @@ public class VerificationToken {
     @Column
     private String token;
 
-    //    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-//    @JoinColumn(nullable = false, name = "user_id")
-    @OneToOne(mappedBy = "token")
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "user_id")
+    @JsonIgnore
+    @ToString.Exclude
     private User user;
 
     @Column(name = "expiry_date")

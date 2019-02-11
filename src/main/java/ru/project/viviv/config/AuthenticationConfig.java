@@ -40,6 +40,7 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                                           "/index",
                                           "/about",
                                           "/registration",
+                                          "/registrationConfirm/**",
                                           "/webjars/**")   .permitAll()
                 .antMatchers("/admin/**")    .access("hasRole('ADMIN')")
                 .antMatchers("/user/**")     .access("hasRole('USER') or hasRole('ADMIN')")
