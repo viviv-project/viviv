@@ -1,5 +1,6 @@
 package ru.project.viviv.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -27,5 +28,10 @@ public class AppConfig extends WebMvcAutoConfiguration {
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }

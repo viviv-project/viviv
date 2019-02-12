@@ -1,6 +1,7 @@
 package ru.project.viviv.model.entity;
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -42,7 +43,7 @@ public class User {
         this.enabled=false;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private VerificationToken verificationTokens;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private VerificationToken token;
 }

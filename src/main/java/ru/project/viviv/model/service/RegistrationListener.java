@@ -2,20 +2,16 @@ package ru.project.viviv.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-import ru.project.viviv.exceptions.AppException;
 import ru.project.viviv.model.dto.OnRegistrationCompleteEvent;
 import ru.project.viviv.model.entity.User;
 
-import javax.mail.internet.MimeMessage;
 import java.util.UUID;
-
-
-
 
 @Component
 public class RegistrationListener implements
@@ -31,39 +27,28 @@ public class RegistrationListener implements
     @Autowired
     private JavaMailSender mailSender;
 
+    @Value("${spring.mail.username}")
+    private String username;
+
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
         this.confirmRegistration(event);
     }
 
-
     private void confirmRegistration(OnRegistrationCompleteEvent event) {
-
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
         userService.createVerificationToken(user, token);
 
         String recipientAddress = user.getEmail();
-        String subject = "Подтверждение регистрации VIVIV.RU";
-        String confirmationUrl
-                = event.getAppUrl() + "/regitrationConfirm.html?token=" + token;
+        String subject = "Подтверждение регистрации";
+        String confirmationUrl = "/registrationConfirm/" + token;
 
- try {
-     MimeMessage mm = mailSender.createMimeMessage();
-     MimeMessageHelper helper = new MimeMessageHelper(mm, true);
-     mm.setHeader("Регистрация пользователя ", user.getEmail());
-     helper.setTo(recipientAddress);
-     helper.setFrom("registration@viviv.ru");
-     helper.setSubject(subject);
-     helper.setText("Подтвердите свой email " + "http://localhost:8080" + confirmationUrl);
-
-     mailSender.send(mm);
-
- }
- catch (Exception ex){
-     AppException.error("Sending email error",ex);
- }
-
-
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setFrom(username);
+        email.setTo(recipientAddress);
+        email.setSubject(subject);
+        email.setText("Пройдите по ссылке для подтверждения email " + "http://localhost:8080" + confirmationUrl);
+        mailSender.send(email);
     }
 }
