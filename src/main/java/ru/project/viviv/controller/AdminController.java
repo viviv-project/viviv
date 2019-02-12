@@ -27,10 +27,6 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private RoleRepository roleRepository;
 
     @RequestMapping("/")
     public String user() {
@@ -60,11 +56,10 @@ public class AdminController {
     public String personSave(@ModelAttribute("user") User frontUser, @ModelAttribute("role") RoleDTO roleDTO) {
         User user = userService.getUserById(frontUser.getId());
         user.setEmail(frontUser.getEmail());
-        user.setEnabled(frontUser.isEnabled());
+        user.setEnabled(frontUser.getEnabled());
         user.setUsername(frontUser.getUsername());
-        List<RoleConnection> roles = getActualRoles(roleDTO);
-        user.setRoleConnections(roles);
-        userService.saveRegisteredUser(user);
+        user = userService.updateRoles(roleDTO, user);
+        userService.saveUser(user);
         return "redirect:/admin/allUsers";
     }
 
@@ -72,16 +67,5 @@ public class AdminController {
     public String personRemove(@RequestParam("id") String userId) {
         userService.removeUserById(userId);
         return "redirect:/admin/allUsers";
-    }
-
-    private List<RoleConnection> getActualRoles(RoleDTO roleDTO) {
-        List<RoleConnection> roles = new ArrayList<>();
-        if (roleDTO.isAdmin()){
-            roles.add(new RoleConnection(roleRepository.findByStatus(RoleStatus.ADMIN)));
-        }
-        if (roleDTO.isUser()){
-            roles.add(new RoleConnection(roleRepository.findByStatus(RoleStatus.USER)));
-        }
-        return roles;
     }
 }

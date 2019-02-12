@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:td="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <title>PERSON-EDIT</title>
@@ -16,10 +16,22 @@
         </tr>
         <tr>
             <td>
+                Id:
+            </td>
+            <td >
+                <label>
+                    <input type="text" size="100" th:field="*{id}" />
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 User Name:
             </td>
             <td >
-                <input type="text" size="100" th:field="*{username}" />
+                <label>
+                    <input type="text" size="100" th:field="*{username}" />
+                </label>
             </td>
         </tr>
         <tr>
@@ -27,29 +39,17 @@
                 Email:
             </td>
             <td >
-                <input type="text" size="100" th:field="*{email}" />
+                <label>
+                    <input type="text" size="100" th:field="*{email}" />
+                </label>
             </td>
         </tr>
 
         <tr>
             <td width="20%" th:utext="${user.roleConnections}" align="center" >...</td>
             <td>
-                <label>Admin</label>
-                <input type="checkbox" th:checked="${role.isAdmin()}"/>
-                <br>
-                <label>User</label>
-                <input type="checkbox" th:checked="${role.isUser()}" />
-            </td>
-
-            <!--<td>-->
-                <!--RoleConnectionId-->
-            <!--</td>-->
-            <!--<td>-->
-                <!--Role-->
-            <!--</td>-->
-            <!--&lt;!&ndash;<td th:each="roleConnection, itemStat: *{roleConnections}">&ndash;&gt;-->
-            <!--<td><label th:label="*{ro}" /></td>-->
-
+                <label th:text="Admin"></label>
+                    <input type="checkbox" name="isAdmin" th:checked="${role.getIsAdmin()}"/>
             </td>
         </tr>
         <tr>
@@ -57,25 +57,10 @@
                 Active:
             </td>
             <td>
-                <input type="checkbox" th:checked="*{enabled}" />
+                <input type="checkbox" name="enabled" th:checked="*{getEnabled()}" />
             </td>
         </tr>
     </table>
-
-    <!--<table>-->
-        <!--<thead>-->
-        <!--<tr>-->
-            <!--<th> RoleConnectionId</th>-->
-            <!--<th> Role</th>-->
-        <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody>-->
-        <!--<tr th:each="roleConnection, itemStat : *{roleConnections}">-->
-            <!--<td><input th:field="*{roleConnections[${itemStat.current.id}].id}" /></td>-->
-            <!--<td><input th:field="*{roleConnections[${itemStat.current.role}].role}" /></td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-    <!--</table>-->
 
     <br/>
     <button type="submit" style="font-size: 2em;" >SAVE</button>

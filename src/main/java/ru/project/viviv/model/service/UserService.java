@@ -3,6 +3,7 @@ package ru.project.viviv.model.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.project.viviv.model.dto.RoleDTO;
 import ru.project.viviv.model.dto.UserDTO;
 import ru.project.viviv.model.entity.*;
 import ru.project.viviv.model.repository.RoleRepository;
@@ -25,9 +26,10 @@ public class UserService {
     @Autowired
     private VerificationTokenRepository tokenRepository;
 
-    public void createUser(@NotNull User user) {
+    public void saveUser(@NotNull User user) {
         userRepository.save(user);
     }
+    public User saveAndReturnUser(@NotNull User user) { return userRepository.save(user);}
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -63,8 +65,7 @@ public class UserService {
         Role role = roleRepository.findByStatus(RoleStatus.USER);
         roleConnection.setRole(role);
         user.getRoleConnections().add(roleConnection);
-        User rUser = userRepository.save(user);
-        return rUser;
+        return saveAndReturnUser(user);
     }
 
     private boolean emailExists(String email) {
@@ -87,5 +88,15 @@ public class UserService {
     public void createVerificationToken(User user, String token) {
         VerificationToken myToken = new VerificationToken(token, user);
         tokenRepository.save(myToken);
+    }
+
+    @Transactional
+    public User updateRoles(RoleDTO roleDTO, User user) {
+        user.getRoleConnections().clear();
+        if (roleDTO.getIsAdmin() != null && roleDTO.getIsAdmin()){
+            user.getRoleConnections().add(new RoleConnection(){{setRole(roleRepository.findByStatus(RoleStatus.ADMIN));}});
+        }
+        user.getRoleConnections().add(new RoleConnection(){{setRole(roleRepository.findByStatus(RoleStatus.USER));}});
+        return user;
     }
 }
