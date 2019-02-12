@@ -30,14 +30,28 @@
                 <input type="text" size="100" th:field="*{email}" />
             </td>
         </tr>
-        <!--<tr>-->
+
+        <tr>
+            <td width="20%" th:utext="${user.roleConnections}" align="center" >...</td>
+            <td>
+                <label>Admin</label>
+                <input type="checkbox" th:checked="${role.isAdmin()}"/>
+                <br>
+                <label>User</label>
+                <input type="checkbox" th:checked="${role.isUser()}" />
+            </td>
+
             <!--<td>-->
-                <!--Role:-->
+                <!--RoleConnectionId-->
             <!--</td>-->
-            <!--<td >-->
-                <!--<input type="text" size="100" th:field="*{roleConnections}" />-->
+            <!--<td>-->
+                <!--Role-->
             <!--</td>-->
-        <!--</tr>-->
+            <!--&lt;!&ndash;<td th:each="roleConnection, itemStat: *{roleConnections}">&ndash;&gt;-->
+            <!--<td><label th:label="*{ro}" /></td>-->
+
+            </td>
+        </tr>
         <tr>
             <td>
                 Active:
@@ -47,6 +61,21 @@
             </td>
         </tr>
     </table>
+
+    <!--<table>-->
+        <!--<thead>-->
+        <!--<tr>-->
+            <!--<th> RoleConnectionId</th>-->
+            <!--<th> Role</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr th:each="roleConnection, itemStat : *{roleConnections}">-->
+            <!--<td><input th:field="*{roleConnections[${itemStat.current.id}].id}" /></td>-->
+            <!--<td><input th:field="*{roleConnections[${itemStat.current.role}].role}" /></td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+    <!--</table>-->
 
     <br/>
     <button type="submit" style="font-size: 2em;" >SAVE</button>

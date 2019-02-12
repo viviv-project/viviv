@@ -8,10 +8,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.project.viviv.model.dto.RoleDTO;
 import ru.project.viviv.model.dto.UserDTO;
+import ru.project.viviv.model.entity.Role;
+import ru.project.viviv.model.entity.RoleConnection;
+import ru.project.viviv.model.entity.RoleStatus;
 import ru.project.viviv.model.entity.User;
+import ru.project.viviv.model.repository.RoleRepository;
 import ru.project.viviv.model.service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -22,6 +29,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @RequestMapping("/")
     public String user() {
@@ -33,7 +42,6 @@ public class AdminController {
         return "users";
     }
 
-    //todo переделать! передавать на фронт DTO объекты
     @RequestMapping(value = "/allUsers", method = RequestMethod.GET)
     public String showAllUsers(Model model) {
         model.addAttribute("users",userService.getAllUsers());
@@ -43,14 +51,19 @@ public class AdminController {
     @RequestMapping(value = {"/user-edit"}, method = RequestMethod.GET)
     public String personEdit(@RequestParam("id") String userId, Map<String,Object> model){
         final User user =  userService.getUserById(userId);
-        UserDTO userDTO = convertToDto(user);
-        model.put("user", userDTO);
+        model.put("user", user);
+        model.put("role", new RoleDTO());
         return "user-edit";
     }
 
     @RequestMapping(value = {"/user-save"}, method = RequestMethod.POST)
-    public String personSave(@ModelAttribute("user") UserDTO userDTO) {
-        User user = convertToEntity(userDTO);
+    public String personSave(@ModelAttribute("user") User frontUser, @ModelAttribute("role") RoleDTO roleDTO) {
+        User user = userService.getUserById(frontUser.getId());
+        user.setEmail(frontUser.getEmail());
+        user.setEnabled(frontUser.isEnabled());
+        user.setUsername(frontUser.getUsername());
+        List<RoleConnection> roles = getActualRoles(roleDTO);
+        user.setRoleConnections(roles);
         userService.saveRegisteredUser(user);
         return "redirect:/admin/allUsers";
     }
@@ -61,15 +74,14 @@ public class AdminController {
         return "redirect:/admin/allUsers";
     }
 
-    private UserDTO convertToDto(User user) {
-        return modelMapper.map(user, UserDTO.class);
-    }
-
-    private User convertToEntity(UserDTO userDTO) {
-        User user = userService.findByEmail(userDTO.getEmail());
-        user.setEmail(userDTO.getEmail());
-        user.setUsername(userDTO.getUsername());
-        user.setEnabled(userDTO.isEnabled());
-        return user;
+    private List<RoleConnection> getActualRoles(RoleDTO roleDTO) {
+        List<RoleConnection> roles = new ArrayList<>();
+        if (roleDTO.isAdmin()){
+            roles.add(new RoleConnection(roleRepository.findByStatus(RoleStatus.ADMIN)));
+        }
+        if (roleDTO.isUser()){
+            roles.add(new RoleConnection(roleRepository.findByStatus(RoleStatus.USER)));
+        }
+        return roles;
     }
 }
