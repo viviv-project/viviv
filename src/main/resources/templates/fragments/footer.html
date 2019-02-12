@@ -2,6 +2,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
+    <script type="text/javascript" src="webjars/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div th:fragment="footer">
@@ -13,13 +14,12 @@
             ВАЖНО! Старайтесь писать на английском, даже если не имеете подобного опыта(переводчик),
             это сэкономит вам нервы(проблемы с кодировками, фильтры) и даст бесценный опыт в будущем -->
             <form method="post" th:action="@{/logout}" >
-            <span sec:authorize="isAuthenticated()">| Пользоваель: <span sec:authentication="name"></span> |
+            <span sec:authorize="isAuthenticated()">| Пользователь: <span sec:authentication="name"></span> |
                 Roles: <span sec:authentication="principal.authorities"></span> |
 
                    <a href="javascript:document.super.submit()" >Выйти</a>
             </span>
             </form>
-            <script type="text/javascript" src="webjars/bootstrap/4.2.1/js/bootstrap.min.js"></script>
         </footer>
     </div>
 
