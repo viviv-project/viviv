@@ -30,6 +30,9 @@ public class RegistrationListener implements
     @Value("${spring.mail.username}")
     private String username;
 
+    @Value("${custom.main.domain}")
+    private String domain;
+
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
         this.confirmRegistration(event);
@@ -48,7 +51,7 @@ public class RegistrationListener implements
         email.setFrom(username);
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText("Пройдите по ссылке для подтверждения email " + "http://localhost:8080" + confirmationUrl);
+        email.setText("Пройдите по ссылке для подтверждения email " + domain + confirmationUrl);
         mailSender.send(email);
     }
 }

@@ -60,12 +60,12 @@ public class AdminController {
         user.setUsername(frontUser.getUsername());
         user = userService.updateRoles(roleDTO, user);
         userService.saveUser(user);
-        return "redirect:/admin/allUsers";
+        return "redirect:allUsers";
     }
 
     @RequestMapping(value = {"/user-remove"}, method = RequestMethod.GET)
     public String personRemove(@RequestParam("id") String userId) {
         userService.removeUserById(userId);
-        return "redirect:/admin/allUsers";
+        return "redirect:allUsers";
     }
 }

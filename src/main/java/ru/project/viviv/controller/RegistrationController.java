@@ -38,7 +38,7 @@ public class RegistrationController {
     public String showRegistrationForm(WebRequest request, Model model) {
         UserDTO userDto = new UserDTO();
         model.addAttribute("user", userDto);
-        return "/registration";
+        return "registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
