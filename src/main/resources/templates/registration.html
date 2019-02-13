@@ -1,99 +1,39 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:padding-top="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <script type="text/javascript" src="webjars/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <title>Регистрационная форма</title>
 </head>
 <body>
-<!--<div>-->
-    <!--<div id="loginbox" style="margin-top: 50px;"-->
-         <!--class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">-->
-
-        <!--<div class="panel panel-primary">-->
-
-            <!--<div class="panel-heading">-->
-                <!--<div class="panel-title" th:text="#{label.form.registration}></div>-->
-            <!--</div>-->
-
-            <!--<div style="padding-top: 30px" class="panel-body">-->
-                <!--<form th:action="@{/registration}"-->
-                      <!--th:object="${user}" method="post" class="form-horizontal">-->
-
-                    <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="col-xs-15">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div th:if="${registrationError != null}">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="alert alert-danger col-xs-offset-1 col-xs-10">&ndash;&gt;-->
-                    <!--&lt;!&ndash;${registrationError}&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash; User name &ndash;&gt;-->
-                    <!--<div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"/>-->
-                    <!--<div style="margin-bottom: 25px" class="input-group">-->
-                        <!--<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>-->
-                        <!--<input th:field="*{username}" placeholder="никнейм (*)" class="form-control"/>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash; Email &ndash;&gt;-->
-                    <!--<div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"/>-->
-                    <!--<div style="margin-bottom: 25px" class="input-group">-->
-                        <!--<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>-->
-                        <!--<input th:field="*{email}" placeholder="email (*)" class="form-control"/>-->
-                    <!--</div>-->
-
-                    <!--&lt;!&ndash; Password &ndash;&gt;-->
-                    <!--<div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"/>-->
-                    <!--<div style="margin-bottom: 25px" class="input-group">-->
-                        <!--<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>-->
-                        <!--<input type="password" th:field="*{password}" placeholder="пароль (*)" class="form-control"/>-->
-                    <!--</div>-->
-
-                    <!--&lt;!&ndash; Confirm Password &ndash;&gt;-->
-                    <!--<div class="error" th:if="${#fields.hasErrors('matchingPassword')}"-->
-                         <!--th:errors="*{matchingPassword}"/>-->
-                    <!--<div style="margin-bottom: 25px" class="input-group">-->
-                        <!--<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>-->
-                        <!--<input type="password" th:field="*{matchingPassword}" placeholder="подтвердите пароль (*)"-->
-                               <!--class="form-control"/>-->
-                    <!--</div>-->
-
-                    <!--<div style="margin-top: 10px" class="form-group">-->
-                        <!--<div class="col-sm-6 controls">-->
-                            <!--<button type="submit" class="btn btn-primary">Зарегистрироваться</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</form>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
 
 <div class="container">
     <div >
         <h1 th:text="#{label.form.registration}">форма</h1>
         <br/>
-        <form th:action="@{/registration}" th:object="${user}" method="POST" enctype="utf8" >
+        <form th:action="@{/registration}" th:object="${user}" method="POST" oninput='password.setCustomValidity(password.value !== matchPassword.value ? "Пароли не совпадают." : "")' >
             <div class="form-group row">
                 <label class="col-sm-3" th:text="#{label.user.username}">username</label>
-                <span class="col-sm-5"><input type="text" class="form-control" name="username" value="" required="required"/></span>
+                <span class="col-sm-5"><input type="text" class="form-control" th:field="*{username}" required="required"/></span>
                 <span id="usernameError" class="alert alert-danger col-sm-4" style="display:none"></span>
             </div>
             <div class="form-group row">
                 <label class="col-sm-3" th:text="#{label.user.email}">email</label>
-                <span class="col-sm-5"><input type="email" class="form-control" name="email" value="" required="required"/></span>
+                <span class="col-sm-5"><input type="email" class="form-control" th:field="*{email}" required="required"/></span>
                 <span id="emailError" class="alert alert-danger col-sm-4" style="display:none"></span>
             </div>
             <div class="form-group row">
                 <label class="col-sm-3" th:text="#{label.user.password}">password</label>
-                <span class="col-sm-5"><input id="password" class="form-control" name="password" value="" type="password" required="required"/></span>
+                <span class="col-sm-5"><input id="password" class="form-control" name="password" th:field="*{password}" type="password" required="required"/></span>
                 <span id="passwordError" class="alert alert-danger col-sm-4" style="display:none"></span>
             </div>
             <div class="form-group row">
                 <label class="col-sm-3" th:text="#{label.user.confirmPass}">confirm</label>
-                <span class="col-sm-5"><input id="matchPassword" class="form-control" name="matchingPassword" value="" type="password" required="required"/></span>
+                <span class="col-sm-5"><input id="matchPassword" class="form-control" name="matchPassword" th:field="*{matchingPassword}" type="password" required="required"/></span>
                 <span id="globalError" class="alert alert-danger col-sm-4" style="display:none"></span>
             </div>
             <br/>
