@@ -16,6 +16,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class VerificationToken {
+
     private static final int EXPIRATION = 60 * 24;
 
     public VerificationToken(String token, User user) {

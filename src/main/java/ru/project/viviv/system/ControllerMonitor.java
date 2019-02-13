@@ -15,6 +15,6 @@ public class ControllerMonitor {
 
     @AfterReturning("execution(* ru.project.viviv.controller..*.*(..))")
     public void monitorControllerFinishExecution(final JoinPoint joinPoint) {
-        LOGGER.info("Completed: " + joinPoint);
+        LOGGER.info("Completed: {}", joinPoint);
     }
 }

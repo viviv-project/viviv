@@ -94,9 +94,9 @@ public class UserService {
     public User updateRoles(RoleDTO roleDTO, User user) {
         user.getRoleConnections().clear();
         if (roleDTO.getIsAdmin() != null && roleDTO.getIsAdmin()){
-            user.getRoleConnections().add(new RoleConnection(){{setRole(roleRepository.findByStatus(RoleStatus.ADMIN));}});
+            user.getRoleConnections().add(new RoleConnection(roleRepository.findByStatus(RoleStatus.ADMIN)));
         }
-        user.getRoleConnections().add(new RoleConnection(){{setRole(roleRepository.findByStatus(RoleStatus.USER));}});
+        user.getRoleConnections().add(new RoleConnection(roleRepository.findByStatus(RoleStatus.USER)));
         return user;
     }
 }

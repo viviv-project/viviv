@@ -26,8 +26,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+       //todo добавить авторизацию по логину
         String email = authentication.getName();
-        LOGGER.info(email + " в onAuthenticationSuccess");
+        LOGGER.info("{}", email);
         User user = userService.findByEmail(email);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
