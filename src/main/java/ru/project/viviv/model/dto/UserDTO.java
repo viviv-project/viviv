@@ -21,5 +21,5 @@ public class UserDTO {
     @NotNull
     @NotEmpty
     private String email;
-    private boolean enabled;
+    private Boolean enabled;
 }

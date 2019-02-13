@@ -25,7 +25,7 @@
         <td width="15%" th:utext="${user.getUsername()}" align="center" >...</td>
         <td width="15%" th:utext="${user.getEmail()}"align="center" >...</td>
         <td width="50%" th:utext="${user.getRoleConnections()}" align="center" >...</td>
-        <td width="20%" th:utext="${user.isEnabled()}" align="center" >...</td>
+        <td width="20%" th:utext="${user.getEnabled()}" align="center" >...</td>
         <td width="50" align="center" nowrap="nowrap">
             <a th:href="@{/admin/user-edit(id=${user.id})}">EDIT</a>
             <!--/person/{id}/edit(id=${person.id})-->

@@ -32,7 +32,7 @@ public class User {
     private String email;
 
     @Column(name = "enabled")
-    private boolean enabled;
+    private Boolean enabled;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

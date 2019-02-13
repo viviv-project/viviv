@@ -22,7 +22,6 @@ import ru.project.viviv.model.service.UserService;
 import ru.project.viviv.validation.EmailExistsException;
 
 import javax.validation.Valid;
-import java.util.Locale;
 
 @Controller
 public class RegistrationController {
@@ -39,7 +38,7 @@ public class RegistrationController {
     public String showRegistrationForm(WebRequest request, Model model) {
         UserDTO userDto = new UserDTO();
         model.addAttribute("user", userDto);
-        return "/registration";
+        return "registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
@@ -62,7 +61,7 @@ public class RegistrationController {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent
                     (registered, request.getLocale(), appUrl));
         } catch (Exception me) {
-            return new ModelAndView("emailError", "user", accountDto);
+            return new ModelAndView("error/emailError", "user", accountDto);
         }
         return new ModelAndView("success-register", "user", accountDto);
     }
