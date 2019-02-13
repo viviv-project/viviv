@@ -1,24 +1,20 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-    <div th:replace="fragments/header :: header-css"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <title>Друзья</title>
 </head>
 <body>
-<div th:replace="fragments/header :: header"/>
-
+<div th:replace="fragments/header :: header"></div>
 <div class="container">
 
     <div class="starter-template">
         <h1>Друзья пользователя </h1>
         <h1 th:inline="text">Привет [[${#httpServletRequest.remoteUser}]]!</h1>
-        <!--<form th:action="@{/logout}" method="post">-->
-            <!--<input type="submit" value="Sign Out"/>-->
-        <!--</form>-->
     </div>
 
 </div>
-<!-- /.container -->
-<div th:replace="fragments/footer :: footer"/>
+<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>

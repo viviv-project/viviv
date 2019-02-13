@@ -8,6 +8,7 @@
     <title>Успешная регистрация</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <div class="container">
     <h1 class="alert alert-success" th:text="#{message.regSucc}">Успешно</h1>
     <a th:href="@{/login}">Авторизоваться</a>
