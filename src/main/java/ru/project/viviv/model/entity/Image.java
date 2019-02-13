@@ -17,6 +17,7 @@ public class Image {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    //todo переименовать image
     @Column
     @NotNull
     private String image;

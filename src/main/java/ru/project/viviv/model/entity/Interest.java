@@ -17,6 +17,7 @@ public class Interest {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    //todo переименовать interest
     @Column
     @NotNull
     private String interest;

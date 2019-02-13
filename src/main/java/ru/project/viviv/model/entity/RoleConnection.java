@@ -3,7 +3,6 @@ package ru.project.viviv.model.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 

@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-import ru.project.viviv.model.dto.OnRegistrationCompleteEvent;
+import ru.project.viviv.model.entity.OnRegistrationCompleteEvent;
 import ru.project.viviv.model.entity.User;
 
 import java.util.UUID;

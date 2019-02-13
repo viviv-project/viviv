@@ -17,6 +17,7 @@ public class Answer {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    //todo переименовать answer
     @Column
     private String answer;
 }

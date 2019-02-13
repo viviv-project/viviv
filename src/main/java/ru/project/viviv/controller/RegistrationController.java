@@ -8,13 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-import ru.project.viviv.model.dto.OnRegistrationCompleteEvent;
+import ru.project.viviv.model.entity.OnRegistrationCompleteEvent;
 import ru.project.viviv.model.dto.UserDTO;
 import ru.project.viviv.model.entity.User;
 import ru.project.viviv.model.entity.VerificationToken;
@@ -34,14 +31,14 @@ public class RegistrationController {
     @Autowired
     private MessageSource messages;
 
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    @GetMapping(value = "/registration")
     public String showRegistrationForm(WebRequest request, Model model) {
         UserDTO userDto = new UserDTO();
         model.addAttribute("user", userDto);
         return "registration";
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @PostMapping(value = "/registration")
     public ModelAndView registerUserAccount(
             @ModelAttribute("user") @Valid UserDTO accountDto,
             BindingResult result,
@@ -59,7 +56,7 @@ public class RegistrationController {
         try {
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent
-                    (registered, request.getLocale(), appUrl));
+                    (registered, appUrl));
         } catch (Exception me) {
             return new ModelAndView("error/emailError", "user", accountDto);
         }
@@ -76,7 +73,7 @@ public class RegistrationController {
         return registered;
     }
 
-    @RequestMapping(value = "/registrationConfirm/{token}", method = RequestMethod.GET)
+    @GetMapping(value = "/registrationConfirm/{token}")
     public String confirmRegistration
             (WebRequest request, Model model, @PathVariable String token) {
 
