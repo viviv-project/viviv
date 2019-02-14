@@ -7,28 +7,13 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-    Start page
-
-
-
+<div th:replace="fragments/menu :: menu"></div>
 
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     <form method="get" th:action="@{/admin/}">
         <button type ="submit">Меню администратора</button>
     </form>
 </div>
-
-    <br>
-
-<div sec:authorize="isAuthenticated()">
-    <form method="get" th:action="@{/user/}">
-        <button type ="submit">Страница пользователя</button>
-    </form>
-</div>
-
-<br>
-
-
 
 <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
     <span th:case="${false}">
@@ -41,12 +26,6 @@
     <span th:case="*">Should never happen, but who knows...</span>
 </div>
 
-
-<br>
-
-
-
-
-<div th:replace="fragments/footer :: footer"/>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
