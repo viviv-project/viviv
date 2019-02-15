@@ -1,15 +1,13 @@
 package ru.project.viviv.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import ru.project.viviv.model.entity.Role;
 import ru.project.viviv.model.entity.User;
 import ru.project.viviv.model.service.UserService;
-import ru.project.viviv.system.ControllerLogging;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,13 +20,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Autowired
     private UserService userService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerLogging.class);
+    private static final Logger log = LogManager.getLogger(CustomAuthenticationSuccessHandler.class);
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
        //todo добавить авторизацию по логину
         String email = authentication.getName();
-        LOGGER.info("{}", email);
+        log.info("{}", email);
         User user = userService.findByEmail(email);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);

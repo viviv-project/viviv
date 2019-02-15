@@ -17,11 +17,16 @@ import ru.project.viviv.model.entity.User;
 import ru.project.viviv.model.entity.VerificationToken;
 import ru.project.viviv.model.service.UserService;
 import ru.project.viviv.validation.EmailExistsException;
+import ru.project.viviv.validation.UsernameExistsException;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class RegistrationController {
+
+
 
     @Autowired
     private UserService userService;
@@ -49,9 +54,18 @@ public class RegistrationController {
             return new ModelAndView("registration", "user", accountDto);
         }
 
-        User registered = createUserAccount(accountDto);
-        if (registered == null) {
+        User registered = null;
+        try {
+            registered = userService.registerNewUserAccount(accountDto);
+        } catch (EmailExistsException e1) {
             result.rejectValue("email", "message.regError");
+        } catch (UsernameExistsException e1) {
+            result.rejectValue("username", "message.regUsernameError");
+        }
+        if (result.hasErrors()) {
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("user", accountDto);
+            return new ModelAndView("registration", "user", accountDto);
         }
         try {
             String appUrl = request.getContextPath();
@@ -61,16 +75,6 @@ public class RegistrationController {
             return new ModelAndView("error/emailError", "user", accountDto);
         }
         return new ModelAndView("success-register", "user", accountDto);
-    }
-
-    private User createUserAccount(UserDTO accountDto) {
-        User registered;
-        try {
-            registered = userService.registerNewUserAccount(accountDto);
-        } catch (EmailExistsException e) {
-            return null;
-        }
-        return registered;
     }
 
     @GetMapping(value = "/registrationConfirm/{token}")

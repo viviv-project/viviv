@@ -12,7 +12,6 @@ import ru.project.viviv.model.service.UserService;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;

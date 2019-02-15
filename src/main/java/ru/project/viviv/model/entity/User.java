@@ -24,7 +24,8 @@ public class User {
     @Column
     private String password;
 
-    @Column
+    @NotNull
+    @Column(unique = true)
     private String username;
 
     @NotNull

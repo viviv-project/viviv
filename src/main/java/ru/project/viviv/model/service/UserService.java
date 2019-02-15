@@ -10,6 +10,7 @@ import ru.project.viviv.model.repository.RoleRepository;
 import ru.project.viviv.model.repository.UserRepository;
 import ru.project.viviv.model.repository.VerificationTokenRepository;
 import ru.project.viviv.validation.EmailExistsException;
+import ru.project.viviv.validation.UsernameExistsException;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
@@ -52,11 +53,15 @@ public class UserService {
     }
 
     @Transactional
-    public User registerNewUserAccount(UserDTO accountDto) throws EmailExistsException {
+    public User registerNewUserAccount(UserDTO accountDto) throws EmailExistsException, UsernameExistsException {
 
         if (emailExists(accountDto.getEmail())) {
             throw new EmailExistsException("Пользователь с таким email уже существует: " + accountDto.getEmail());
         }
+        if (usernameExists(accountDto.getUsername())){
+            throw new UsernameExistsException("Пользователь с таким никнеймом уже сущестует: " + accountDto.getUsername());
+        }
+
         User user = new User();
         user.setUsername(accountDto.getUsername());
         user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
@@ -70,6 +75,11 @@ public class UserService {
 
     private boolean emailExists(String email) {
         User user = userRepository.findByEmail(email);
+        return user != null;
+    }
+
+    private boolean usernameExists(String username){
+        User user = userRepository.findByUsername(username);
         return user != null;
     }
 
