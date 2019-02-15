@@ -15,16 +15,15 @@
     </form>
 </div>
 
-<div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
-    <span th:case="${false}">
-            Вы ещё не авторизовались. <a href="/login"> Войти</a>
-            <form method="get" th:action="@{/registration}" >
-            <button type ="submit">Регистрация нового пользователя</button>
-    </form>
-    </span>
-    <span th:case="${true}">Вы авторизовались как <div th:text="${#authentication.name}"></div></span>
-    <span th:case="*">Should never happen, but who knows...</span>
-</div>
+<!--<div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">-->
+    <!--<span th:case="${false}">-->
+            <!--Вы ещё не авторизовались. <a href="/login"> Войти</a>-->
+            <!--<form method="get" th:action="@{/registration}" >-->
+            <!--<button type ="submit">Регистрация нового пользователя</button>-->
+    <!--</form>-->
+    <!--</span>-->
+    <!--<span th:case="${true}">Вы авторизовались как <div th:text="${#authentication.name}"></div></span>-->
+<!--</div>-->
 
 <div th:replace="fragments/footer :: footer"></div>
 </body>

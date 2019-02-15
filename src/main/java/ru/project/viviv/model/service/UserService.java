@@ -30,13 +30,16 @@ public class UserService {
     public void saveUser(@NotNull User user) {
         userRepository.save(user);
     }
-    public User saveAndReturnUser(@NotNull User user) { return userRepository.save(user);}
+
+    public User saveAndReturnUser(@NotNull User user) {
+        return userRepository.save(user);
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-        public void removeUser(@NotNull User user) {
+    public void removeUser(@NotNull User user) {
         userRepository.delete(user);
     }
 
@@ -52,13 +55,16 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public User findByUsername(@NotNull String username){
+        return userRepository.findByUsername(username);
+    }
     @Transactional
     public User registerNewUserAccount(UserDTO accountDto) throws EmailExistsException, UsernameExistsException {
 
         if (emailExists(accountDto.getEmail())) {
             throw new EmailExistsException("Пользователь с таким email уже существует: " + accountDto.getEmail());
         }
-        if (usernameExists(accountDto.getUsername())){
+        if (usernameExists(accountDto.getUsername())) {
             throw new UsernameExistsException("Пользователь с таким никнеймом уже сущестует: " + accountDto.getUsername());
         }
 
@@ -78,7 +84,7 @@ public class UserService {
         return user != null;
     }
 
-    private boolean usernameExists(String username){
+    private boolean usernameExists(String username) {
         User user = userRepository.findByUsername(username);
         return user != null;
     }
@@ -103,7 +109,7 @@ public class UserService {
     @Transactional
     public User updateRoles(RoleDTO roleDTO, User user) {
         user.getRoleConnections().clear();
-        if (roleDTO.getIsAdmin() != null && roleDTO.getIsAdmin()){
+        if (roleDTO.getIsAdmin() != null && roleDTO.getIsAdmin()) {
             user.getRoleConnections().add(new RoleConnection(roleRepository.findByStatus(RoleStatus.ADMIN)));
         }
         user.getRoleConnections().add(new RoleConnection(roleRepository.findByStatus(RoleStatus.USER)));

@@ -1,46 +1,23 @@
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-        <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.2.1/css/bootstrap.min.css"/>
-        <link rel="stylesheet" th:href="@{/css/main.css}" href="../../static/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.2.1/css/bootstrap.min.css"/>
 </head>
 <body>
+
 <div th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">viviv</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="navbar-header">
-            <h1><a class="navbar-brand" th:href="@{/}"></a></h1>
-        </div>
-        <!--<div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-            <!--<ul class="navbar-nav mr-auto">-->
-                <!--<li class="nav-item active">-->
-                    <!--<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
-                <!--</li>-->
-            <!--</ul>-->
-        <!--</div>-->
-        <!--<div class="collapse navbar-collapse" sec:authorize="isAuthenticated()">-->
-            <!--<a th:href="@{/user/}">Cтраница пользователя</a>-->
-        <!--</div>-->
-        <!--<div class="collapse navbar-collapse" sec:authorize="isAuthenticated()">-->
-            <!--<a th:href="@{/user/profile}">Профиль пользователя</a>-->
-        <!--</div>-->
-        <!--<div class="collapse navbar-collapse" sec:authorize="isAuthenticated()">-->
-            <!--<a th:href="@{/user/friends}">Друзья пользователя</a>-->
-        <!--</div>-->
-        <!--<div class="collapse navbar-collapse" sec:authorize="isAuthenticated()">-->
-            <!--<a th:href="@{/user/}">Cтраница пользователя</a>-->
-        <!--</div>-->
-
-        <div class="collapse navbar-collapse" sec:authorize="isAuthenticated()">
-            <form method="post" th:action="@{/logout}" name="super">
-                <a href="javascript:document.super.submit()" style="align: center">Выйти</a>
-            </form>
-        </div>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <a class="navbar-brand" href="/"><img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg"
+                                              class="d-inline-block align-top" alt="viviv">viviv</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                    <form th:case="${true}" method="post" th:action="@{/logout}" name="super">
+                        <input type="submit" class="btn btn-primary" value="Выйти"/>
+                    </form>
+                    <a th:case="${false}" class="btn btn-primary" href="/login">Войти</a>
+                </div>
+            </li>
+        </ul>
     </nav>
 </div>
 

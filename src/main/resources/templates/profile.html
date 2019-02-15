@@ -10,7 +10,7 @@
 
 <div class="container" sec:authorize="isAuthenticated()">
     <div class="starter-template">
-        <h1 th:text="${user.username}">Профиль пользователя</h1>
+        <h1 th:text="${username}">Профиль пользователя</h1>
         <h1 th:inline="text">Привет [[${#httpServletRequest.remoteUser}]]!</h1>
     </div>
 </div>

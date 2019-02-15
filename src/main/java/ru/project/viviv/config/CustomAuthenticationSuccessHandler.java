@@ -24,12 +24,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-       //todo добавить авторизацию по логину
-        String email = authentication.getName();
-        log.info("{}", email);
-        User user = userService.findByEmail(email);
+        String username = authentication.getName();
+        log.info("Username {}", username);
+        User user = userService.findByUsername(username);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
+        System.out.println(request.getContextPath());
         response.sendRedirect(request.getContextPath() + "/");
     }
 }

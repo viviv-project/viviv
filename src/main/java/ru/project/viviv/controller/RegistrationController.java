@@ -7,12 +7,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-import ru.project.viviv.model.entity.OnRegistrationCompleteEvent;
 import ru.project.viviv.model.dto.UserDTO;
+import ru.project.viviv.model.entity.OnRegistrationCompleteEvent;
 import ru.project.viviv.model.entity.User;
 import ru.project.viviv.model.entity.VerificationToken;
 import ru.project.viviv.model.service.UserService;
@@ -20,13 +22,9 @@ import ru.project.viviv.validation.EmailExistsException;
 import ru.project.viviv.validation.UsernameExistsException;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class RegistrationController {
-
-
 
     @Autowired
     private UserService userService;
@@ -45,15 +43,10 @@ public class RegistrationController {
 
     @PostMapping(value = "/registration")
     public ModelAndView registerUserAccount(
-            @ModelAttribute("user") @Valid UserDTO accountDto,
-            BindingResult result,
-            WebRequest request,
-            Errors errors) {
-
+            @ModelAttribute("user") @Valid UserDTO accountDto, BindingResult result) {
         if (result.hasErrors()) {
             return new ModelAndView("registration", "user", accountDto);
         }
-
         User registered = null;
         try {
             registered = userService.registerNewUserAccount(accountDto);
@@ -63,14 +56,10 @@ public class RegistrationController {
             result.rejectValue("username", "message.regUsernameError");
         }
         if (result.hasErrors()) {
-            Map<String, Object> model = new HashMap<String, Object>();
-            model.put("user", accountDto);
             return new ModelAndView("registration", "user", accountDto);
         }
         try {
-            String appUrl = request.getContextPath();
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent
-                    (registered, appUrl));
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered));
         } catch (Exception me) {
             return new ModelAndView("error/emailError", "user", accountDto);
         }
@@ -78,8 +67,7 @@ public class RegistrationController {
     }
 
     @GetMapping(value = "/registrationConfirm/{token}")
-    public String confirmRegistration
-            (WebRequest request, Model model, @PathVariable String token) {
+    public String confirmRegistration(Model model, @PathVariable String token) {
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {

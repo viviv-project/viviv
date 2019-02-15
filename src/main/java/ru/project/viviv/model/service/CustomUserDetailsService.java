@@ -22,8 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
@@ -36,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             }
 
             return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(),
+                    user.getUsername(),
                     user.getPassword(),
                     user.getEnabled(),
                     accountNonExpired,
