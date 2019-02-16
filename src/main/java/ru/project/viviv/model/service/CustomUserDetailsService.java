@@ -1,5 +1,7 @@
 package ru.project.viviv.model.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +24,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    private static final Logger log = LogManager.getLogger(CustomUserDetailsService.class);
+
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         boolean accountNonExpired = true;
@@ -30,8 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         try {
             User user = userRepository.findByEmail(email);
             if (user == null) {
-                throw new UsernameNotFoundException(
-                        "No user found with username: " + email);
+                throw new UsernameNotFoundException("Нет пользователя с таким email: " + email);
             }
 
             return new org.springframework.security.core.userdetails.User(

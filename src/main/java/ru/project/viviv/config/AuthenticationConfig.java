@@ -10,13 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import ru.project.viviv.model.service.CustomUserDetailsService;
-import ru.project.viviv.model.service.RoleService;
-import ru.project.viviv.model.service.UserService;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

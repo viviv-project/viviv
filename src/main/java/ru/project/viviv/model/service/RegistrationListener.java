@@ -1,5 +1,7 @@
 package ru.project.viviv.model.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +16,7 @@ import ru.project.viviv.model.entity.User;
 import java.util.UUID;
 
 @Component
-public class RegistrationListener implements
-        ApplicationListener<OnRegistrationCompleteEvent> {
+public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
     @Autowired
     private UserService userService;
@@ -32,6 +33,8 @@ public class RegistrationListener implements
 
     @Value("${custom.main.domain}")
     private String domain;
+
+    private static final Logger log = LogManager.getLogger(RegistrationListener.class);
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
@@ -53,5 +56,6 @@ public class RegistrationListener implements
         email.setSubject(subject);
         email.setText("Пройдите по ссылке для подтверждения email " + domain + confirmationUrl);
         mailSender.send(email);
+        log.info("Отправлено письмо для подтверждения на почту: {}", recipientAddress);
     }
 }

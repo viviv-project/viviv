@@ -1,5 +1,5 @@
 Configutation:
-  name: Analytics-logs
+  name: Viviv-logs
 
   Properties:
     Property:
@@ -16,7 +16,7 @@ Configutation:
 
     File:
       name: File_Appender
-      fileName: ${log-path}/analyticsLog.log
+      fileName: ${log-path}/vivivLog.log
       PatternLayout:
         pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
 
@@ -28,7 +28,7 @@ Configutation:
         - ref: Console_Appender
 
     Logger:
-      - name: ru.vulkan.analytics
-        level: trace
+      - name: viviv
+        level: error
         AppenderRef:
           - ref: File_Appender
