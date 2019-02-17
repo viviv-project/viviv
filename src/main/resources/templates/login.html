@@ -3,38 +3,20 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-    <title>Login Page</title>
+    <title>Страница авторизации</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!--<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.2.1/css/bootstrap.min.css" />-->
-    <!--<script src="/webjars/jquery/3.3.1-1/jquery.js"></script>-->
-    <!--<script src="/webjars/bootstrap/4.2.1/js/bootstrap.min.js"></script>-->
-
-<!--<script type="application/javascript">
-    function checkParams() {
-        //var name = $('#name').val();
-        var email = $('#email').val();
-        var password = $('#password').val();
-
-        if(email.length >= 4 && password.length >=3) {
-            $('#submit').removeAttr('disabled');
-        } else {
-            $('#submit').attr('disabled', 'disabled');
-        }
-    }
-</script>-->
-    <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/dist/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
-    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.2.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
-    <!--<script type="text/javascript" th:src="@{/js/my.js}"></script>-->
-    <!--<div th:replace="fragments/header :: header-css"/>-->
+    <link type="text/css" rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
 <div th:replace="fragments/header :: header"></div>
 
-<div class="card" style="margin-left:40%; height:360px; width:400px">
+<div class="card login-card">
     <article class="card-body">
         <h4 class="card-title text-center mb-4 mt-1">Авторизация</h4>
         <hr>
@@ -82,6 +64,6 @@
     </article>
 </div>
 
-<div th:replace="fragments/footer :: footer"/>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

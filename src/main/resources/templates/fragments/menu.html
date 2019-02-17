@@ -2,8 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="ru">
 <head>
-    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.2.1/css/bootstrap.min.css"/>
-    <link rel="stylesheet" th:href="@{/css/main.css}" href="../../static/css/main.css"/>
 </head>
 <body>
 <div th:fragment="menu" sec:authorize="isAuthenticated()">
@@ -12,7 +10,7 @@
             <a class="nav-link" th:href="${#authentication.getName()}">Моя страница</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:href="@{${#authentication.getName()} + '/friends'}">Друзья</a>
+            <a class="nav-link" href="/friends">Друзья</a>
         </li>
     </ul>
 </div>
