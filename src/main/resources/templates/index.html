@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/main.css}"/>
     <title>Портал для общения ::VIVIV::</title>
-    <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
-<div th:replace="fragments/header :: header"/>
-    Start page
-
-
-
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/menu :: menu"></div>
 
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     <form method="get" th:action="@{/admin/}">
@@ -19,35 +16,16 @@
     </form>
 </div>
 
-    <br>
+<!--<div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">-->
+    <!--<span th:case="${false}">-->
+            <!--Вы ещё не авторизовались. <a href="/login"> Войти</a>-->
+            <!--<form method="get" th:action="@{/registration}" >-->
+            <!--<button type ="submit">Регистрация нового пользователя</button>-->
+    <!--</form>-->
+    <!--</span>-->
+    <!--<span th:case="${true}">Вы авторизовались как <div th:text="${#authentication.name}"></div></span>-->
+<!--</div>-->
 
-<div sec:authorize="isAuthenticated()">
-    <form method="get" th:action="@{/user/}">
-        <button type ="submit">Страница пользователя</button>
-    </form>
-</div>
-
-<br>
-
-
-
-<div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
-    <span th:case="${false}">
-            Вы ещё не авторизовались. <a href="/login"> Войти</a>
-            <form method="get" th:action="@{/registration}" >
-            <button type ="submit">Регистрация нового пользователя</button>
-    </form>
-    </span>
-    <span th:case="${true}">Вы авторизовались как <div th:text="${#authentication.name}"></div></span>
-    <span th:case="*">Should never happen, but who knows...</span>
-</div>
-
-
-<br>
-
-
-
-
-<div th:replace="fragments/footer :: footer"/>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

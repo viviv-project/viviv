@@ -24,7 +24,8 @@ public class User {
     @Column
     private String password;
 
-    @Column
+    @NotNull
+    @Column(unique = true)
     private String username;
 
     @NotNull
@@ -36,6 +37,7 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private List<RoleConnection> roleConnections = new ArrayList<>();
 
     public User() {

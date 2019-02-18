@@ -1,11 +1,17 @@
-h1{
-    color: #4a2bff;
-}
+/*h1{*/
+    /*color: #4a2bff;*/
+/*}*/
 
-h2{
-    color: #ff171c;
-}
+/*h2{*/
+    /*color: #ff171c;*/
+/*}*/
 
-footer{
-    margin-top:60px;
+/*footer{*/
+    /*margin-top:60px;*/
+/*}*/
+
+.login-card{
+    margin-left:40%;
+    height:360px;
+    width:400px;
 }
