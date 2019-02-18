@@ -11,5 +11,8 @@ import java.util.List;
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, String> {
 
-    List<Friend> findAllByFriendSource_Status(FriendStatus status);
+    List<Friend> findAllByFriendSource_StatusAndFriendTarget_StatusAndFriendSource_User_Username(FriendStatus friendSourceStatus, FriendStatus friendTargetStatus, String username);
+    List<Friend> findAllByFriendTarget_StatusAndFriendSource_StatusAndFriendTarget_User_Username(FriendStatus friendTargetStatus, FriendStatus friendSourceStatus, String username);
+    List<Friend> findAllByFriendSource_User_Username(String username);
+    List<Friend> findAllByFriendTarget_User_Username(String username);
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.project.viviv.model.dto.RoleDTO;
 import ru.project.viviv.model.dto.UserDTO;
 import ru.project.viviv.model.entity.*;
+import ru.project.viviv.model.repository.FriendRepository;
 import ru.project.viviv.model.repository.RoleRepository;
 import ru.project.viviv.model.repository.UserRepository;
 import ru.project.viviv.model.repository.VerificationTokenRepository;
@@ -26,6 +27,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private VerificationTokenRepository tokenRepository;
+    @Autowired
+    private FriendService friendService;
 
     public void saveUser(@NotNull User user) {
         userRepository.save(user);
@@ -58,8 +61,9 @@ public class UserService {
     public User findByUsername(@NotNull String username){
         return userRepository.findByUsername(username);
     }
+
     @Transactional
-    public User registerNewUserAccount(UserDTO accountDto) throws EmailExistsException, UsernameExistsException {
+    public User registerNewUserAccount(@NotNull UserDTO accountDto) throws EmailExistsException, UsernameExistsException {
 
         if (emailExists(accountDto.getEmail())) {
             throw new EmailExistsException("Пользователь с таким email уже существует: " + accountDto.getEmail());
@@ -79,25 +83,25 @@ public class UserService {
         return saveAndReturnUser(user);
     }
 
-    private boolean emailExists(String email) {
+    private boolean emailExists(@NotNull String email) {
         User user = userRepository.findByEmail(email);
         return user != null;
     }
 
-    private boolean usernameExists(String username) {
+    private boolean usernameExists(@NotNull String username) {
         User user = userRepository.findByUsername(username);
         return user != null;
     }
 
-    public User getUser(String verificationToken) {
+    public User getUser(@NotNull String verificationToken) {
         return tokenRepository.findByToken(verificationToken).getUser();
     }
 
-    public VerificationToken getVerificationToken(String verificationToken) {
+    public VerificationToken getVerificationToken(@NotNull String verificationToken) {
         return tokenRepository.findByToken(verificationToken);
     }
 
-    public void saveRegisteredUser(User user) {
+    public void saveRegisteredUser(@NotNull User user) {
         userRepository.save(user);
     }
 
@@ -107,12 +111,24 @@ public class UserService {
     }
 
     @Transactional
-    public User updateRoles(RoleDTO roleDTO, User user) {
+    public User updateRoles(@NotNull RoleDTO roleDTO, @NotNull User user) {
         user.getRoleConnections().clear();
         if (roleDTO.getIsAdmin() != null && roleDTO.getIsAdmin()) {
             user.getRoleConnections().add(new RoleConnection(roleRepository.findByStatus(RoleStatus.ADMIN)));
         }
         user.getRoleConnections().add(new RoleConnection(roleRepository.findByStatus(RoleStatus.USER)));
         return user;
+    }
+
+    //todo заменить ACCEPT на REQUEST
+    public void addFriend(@NotNull String username, @NotNull String friendUsername){
+        FriendSource friendSource = new FriendSource();
+        friendSource.setStatus(FriendStatus.ACCEPT);
+        friendSource.setUser(findByUsername(username));
+        FriendTarget friendTarget = new FriendTarget();
+        friendTarget.setStatus(FriendStatus.ACCEPT);
+        friendTarget.setUser(findByUsername(friendUsername));
+        Friend friend = new Friend(friendSource, friendTarget);
+        friendService.saveFriend(friend);
     }
 }

@@ -31,7 +31,7 @@ public class AdminController {
     @GetMapping(value = "/allUsers")
     public String showAllUsers(Model model) {
         model.addAttribute("users",userService.getAllUsers());
-        return "all-users";
+        return "admin-all-users";
     }
 
     @GetMapping(value = {"/user-edit"})
