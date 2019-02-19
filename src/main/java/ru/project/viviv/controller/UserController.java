@@ -51,7 +51,7 @@ public class UserController {
 
     //todo метод для отладки, удалить позже
     @PostMapping("addFriend")
-    public RedirectView addFriend(@RequestParam String friendUsername, Principal principal){
+    public RedirectView addFriend(@RequestParam String friendUsername, Principal principal) {
         userService.addFriend(principal.getName(), friendUsername);
         return new RedirectView("allUsers");
     }

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.project.viviv.model.dto.RoleDTO;
 import ru.project.viviv.model.dto.UserDTO;
 import ru.project.viviv.model.entity.*;
-import ru.project.viviv.model.repository.FriendRepository;
 import ru.project.viviv.model.repository.RoleRepository;
 import ru.project.viviv.model.repository.UserRepository;
 import ru.project.viviv.model.repository.VerificationTokenRepository;
@@ -29,6 +28,8 @@ public class UserService {
     private VerificationTokenRepository tokenRepository;
     @Autowired
     private FriendService friendService;
+    @Autowired
+    private ProfileService profileService;
 
     public void saveUser(@NotNull User user) {
         userRepository.save(user);
@@ -58,7 +59,7 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public User findByUsername(@NotNull String username){
+    public User findByUsername(@NotNull String username) {
         return userRepository.findByUsername(username);
     }
 
@@ -80,7 +81,11 @@ public class UserService {
         Role role = roleRepository.findByStatus(RoleStatus.USER);
         roleConnection.setRole(role);
         user.getRoleConnections().add(roleConnection);
-        return saveAndReturnUser(user);
+        User savedUser = saveAndReturnUser(user);
+        Profile profile = new Profile();
+        profile.setId(savedUser.getId());
+        profileService.createProfile(profile);
+        return savedUser;
     }
 
     private boolean emailExists(@NotNull String email) {
@@ -121,7 +126,7 @@ public class UserService {
     }
 
     //todo заменить ACCEPT на REQUEST
-    public void addFriend(@NotNull String username, @NotNull String friendUsername){
+    public void addFriend(@NotNull String username, @NotNull String friendUsername) {
         FriendSource friendSource = new FriendSource();
         friendSource.setStatus(FriendStatus.ACCEPT);
         friendSource.setUser(findByUsername(username));

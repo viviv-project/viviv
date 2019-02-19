@@ -17,8 +17,6 @@ public class Profile {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     @Column
@@ -49,4 +47,5 @@ public class Profile {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<UserQuestion> userQuestions = new ArrayList<>();
+
 }

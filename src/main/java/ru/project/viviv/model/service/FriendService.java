@@ -2,6 +2,7 @@ package ru.project.viviv.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.project.viviv.model.entity.Friend;
 import ru.project.viviv.model.entity.FriendStatus;
 import ru.project.viviv.model.entity.User;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@Transactional
 public class FriendService {
 
     @Autowired
@@ -38,5 +40,10 @@ public class FriendService {
 
     public void saveFriend(@NotNull Friend friend) {
         friendRepository.save(friend);
+    }
+
+    public void removeAllFriends(@NotNull User user) {
+        friendRepository.deleteAll(friendRepository.findAllByFriendSource_User_Username(user.getUsername()));
+        friendRepository.deleteAll(friendRepository.findAllByFriendTarget_User_Username(user.getUsername()));
     }
 }

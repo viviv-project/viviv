@@ -7,11 +7,12 @@ import ru.project.viviv.model.repository.AnswerRepository;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AnswerService {
     @Autowired
-    AnswerRepository answerRepository;
+    private AnswerRepository answerRepository;
 
     public void createAnswer(@NotNull Answer answer) {
         answerRepository.save(answer);
@@ -35,5 +36,9 @@ public class AnswerService {
 
     public void removeAnswers(@NotNull Answer answer) {
         answerRepository.delete(answer);
+    }
+
+    public Optional<Answer> findAnswerByName(@NotNull String name) {
+        return answerRepository.findByAnswer(name);
     }
 }
