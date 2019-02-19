@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.project.viviv.model.dto.RoleDTO;
 import ru.project.viviv.model.entity.User;
+import ru.project.viviv.model.service.FriendService;
 import ru.project.viviv.model.service.UserService;
 
 import java.util.Map;
@@ -16,6 +17,8 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private FriendService friendService;
 
     @RequestMapping("/")
     public String user() {
@@ -30,13 +33,13 @@ public class AdminController {
     //todo заменить persistent entity на DTO
     @GetMapping(value = "/allUsers")
     public String showAllUsers(Model model) {
-        model.addAttribute("users",userService.getAllUsers());
-        return "all-users";
+        model.addAttribute("users", userService.getAllUsers());
+        return "admin-all-users";
     }
 
     @GetMapping(value = {"/user-edit"})
-    public String personEdit(@RequestParam("id") String userId, Map<String,Object> model){
-        final User user =  userService.getUserById(userId);
+    public String personEdit(@RequestParam("id") String userId, Map<String, Object> model) {
+        final User user = userService.getUserById(userId);
         model.put("user", user);
         model.put("role", new RoleDTO());
         return "user-edit";
@@ -55,6 +58,8 @@ public class AdminController {
 
     @GetMapping(value = {"/user-remove"})
     public String personRemove(@RequestParam("id") String userId) {
+        User user = userService.getUserById(userId);
+        friendService.removeAllFriends(user);
         userService.removeUserById(userId);
         return "redirect:allUsers";
     }

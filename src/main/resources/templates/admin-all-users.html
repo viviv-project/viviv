@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title style="text-blink: 10">ПАНЕЛЬ АДМИНИСТРАТОРА</title>
+    <style>
+        .even {
+            background-color: lightgrey;
+        }
+        </style>
+</head>
+<body>
+<table border="1" width="100%" cellpadding="10" cellspacing="10" style="...">
+    <tr>
+        <th>№</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>ROLES</th>
+        <th>Active</th>
+        <th></th>
+        <th></th>
+    </tr>
+    <tr th:each="user,iter : ${users}" th:class="${iter.even ? 'even' : 'odd'}" >
+        <td width="50" align="center" nowrap="nowrap" th:utext="${iter.index +1}">...</td>
+        <td width="15%" th:utext="${user.getUsername()}" align="center" >...</td>
+        <td width="15%" th:utext="${user.getEmail()}"align="center" >...</td>
+        <td width="50%" th:utext="${user.getRoleConnections()}" align="center" >...</td>
+        <td width="20%" th:utext="${user.getEnabled()}" align="center" >...</td>
+        <td width="50" align="center" nowrap="nowrap">
+            <a th:href="@{/admin/user-edit(id=${user.id})}">EDIT</a>
+            <!--/person/{id}/edit(id=${person.id})-->
+        </td>
+        <td width="50" align="center" nowrap="nowrap">
+            <a th:href="@{'/admin/user-remove?id=' + ${user.id}}">REMOVE</a>
+        </td>
+    </tr>
+
+</table>
+ <br />
+
+
+</body>
+</html>

@@ -38,6 +38,7 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                                           "/about",
                                           "/registration",
                                           "/images/**",
+                                          "/question",
                                           "/css/**",
                                           "/registrationConfirm/**",
                                           "/webjars/**")   .permitAll()

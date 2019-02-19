@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 public class ConverterDTO {
 
     public UserDTO UserToDTO(@NotNull User user){
-        return new UserDTO();
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        return userDTO;
     }
 }

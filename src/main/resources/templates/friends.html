@@ -9,25 +9,30 @@
 <div th:replace="fragments/menu :: menu"></div>
 
 <div class="container">
-    <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
-        <div class="card">
-            <img class="card-img-top" src="https://picsum.photos/200/150/?random">
-            <div class="card-block">
-                <h4 class="card-title">Tawshif Ahsan Khan</h4>
-                <div class="meta">
-                    <a href="#">Friends</a>
-                </div>
-                <div class="card-text">
-                    Tawshif is a web designer living in Bangladesh.
-                </div>
-            </div>
-            <div class="card-footer">
-                <span class="float-right">Joined in 2013</span>
-                <span><i class=""></i>75 Friends</span>
+    <th:block th:with="colCount=${4}">
+        <div th:each="r : ${#numbers.sequence(0, friends.size(), colCount)}" class="row">
+            <div th:each="c : ${#numbers.sequence(0, colCount - 1)}" th:if="${r + c &lt; friends.size()}" class="col-3">
+
+                    <div class="card">
+                        <a th:href="${friends.get(r + c).username}"><img class="card-img-top"
+                                                             src="https://picsum.photos/200/150/?random"></a>
+                        <div class="card-block">
+                            <h4 class="card-title" th:text="${friends.get(r + c).username}"></h4>
+                            <div class="card-text">
+                                <form name="f" th:action="@{/addFriend}" method="post">
+                                    <input type="hidden" name="friendUsername" th:value="${friends.get(r + c).username}"/>
+                                    <button type="submit">В друзья</button>
+                                </form>
+                                <!--<td th:text="${friends.get(r + c).username}">...</td>-->
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
-    </div>
+    </th:block>
+
 </div>
+
 <div th:replace="fragments/footer :: footer"></div>
 
 </body>

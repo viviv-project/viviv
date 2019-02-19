@@ -13,15 +13,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import ru.project.viviv.common.ConverterDTO;
+import ru.project.viviv.model.dto.QuestionDTO;
 import ru.project.viviv.model.dto.UserDTO;
 import ru.project.viviv.model.entity.OnRegistrationCompleteEvent;
 import ru.project.viviv.model.entity.User;
+import ru.project.viviv.model.entity.UserQuestion;
 import ru.project.viviv.model.entity.VerificationToken;
 import ru.project.viviv.model.service.UserService;
 import ru.project.viviv.validation.EmailExistsException;
 import ru.project.viviv.validation.UsernameExistsException;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class RegistrationController {
@@ -33,6 +37,8 @@ public class RegistrationController {
     @Qualifier("messageSource")
     @Autowired
     private MessageSource messages;
+    @Autowired
+    private ConverterDTO converterDTO;
 
     @GetMapping(value = "/registration")
     public String showRegistrationForm(WebRequest request, Model model) {
@@ -67,13 +73,13 @@ public class RegistrationController {
     }
 
     @GetMapping(value = "/registrationConfirm/{token}")
-    public String confirmRegistration(Model model, @PathVariable String token) {
+    public ModelAndView confirmRegistration(Model model, @PathVariable String token) {
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
             String message = messages.getMessage("auth.message.invalidToken", null, null);
             model.addAttribute("message", message);
-            return "redirect:/badUser";
+            return new ModelAndView("badUser");
         }
 
         User user = verificationToken.getUser();
@@ -86,6 +92,15 @@ public class RegistrationController {
 
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
-        return "redirect:/login";
+
+        QuestionDTO questionDTO = new QuestionDTO();
+        questionDTO.setUsername(user.getUsername());
+        List<UserQuestion> userQuestions = user.getProfile().getUserQuestions();
+        if (userQuestions.size() >= 3) {
+            return new ModelAndView("redirect:/login");
+        }
+        return new ModelAndView("question", "question", questionDTO);
     }
+
+
 }

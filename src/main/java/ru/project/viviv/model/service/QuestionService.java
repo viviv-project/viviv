@@ -7,6 +7,7 @@ import ru.project.viviv.model.repository.QuestionRepository;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuestionService {
@@ -35,5 +36,9 @@ public class QuestionService {
 
     public void removeQuestions(@NotNull Question question) {
         questionRepository.delete(question);
+    }
+
+    public Optional<Question> findQuestionByName(@NotNull String name) {
+        return questionRepository.findByQuestion(name);
     }
 }

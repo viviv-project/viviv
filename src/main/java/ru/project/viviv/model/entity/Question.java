@@ -1,6 +1,7 @@
 package ru.project.viviv.model.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "vi_question")
 @Data
+@NoArgsConstructor
 public class Question {
 
     @Id
@@ -17,6 +19,10 @@ public class Question {
     private String id;
 
     //todo переименовать question
-    @Column
+    @Column(unique = true)
     private String question;
+
+    public Question(String question) {
+        this.question = question;
+    }
 }
