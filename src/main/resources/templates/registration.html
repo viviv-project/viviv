@@ -17,9 +17,9 @@
     <article class="card-body">
         <h4 class="card-title text-center mb-4 mt-1" th:text="#{label.form.registration}"></h4>
         <hr>
-        <form th:action="@{/registration}" th:object="${user}" method="POST" oninput='password.setCustomValidity(password.value !== matchPassword.value ? "Пароли не совпадают." : "")' >
+        <form class="form-group" th:action="@{/registration}" th:object="${user}" method="POST" oninput='password.setCustomValidity(password.value !== matchPassword.value ? "Пароли не совпадают." : "")' >
             <div class="form-group row">
-                <label class="col-sm-2" th:text="#{label.user.username}">username</label>
+                <label class="col-sm-2 offset-md-2" th:text="#{label.user.username}">username</label>
                 <div class="col-sm-5 col-lg-4"><input type="text" class="form-control" th:field="*{username}" required="required"/></div>
                 <div>
                     <small class="text-danger" th:each="error : ${#fields.errors('username')}" th:text="${error}">
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2" th:text="#{label.user.email}">email</label>
+                <label class="col-sm-2 offset-md-2" th:text="#{label.user.email}">email</label>
                 <div class="col-sm-5 col-lg-4"><input type="email" class="form-control" th:field="*{email}" required="required"/></div>
                 <div>
                     <small class="text-danger" th:each="error : ${#fields.errors('email')}" th:text="${error}">
@@ -35,20 +35,20 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2" th:text="#{label.user.password}">password</label>
+                <label class="col-sm-2 offset-md-2" th:text="#{label.user.password}">password</label>
                 <span class="col-sm-5 col-lg-4"><input id="password" class="form-control" name="password" th:field="*{password}" type="password" required="required"/></span>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2" th:text="#{label.user.confirmPass}">confirm</label>
+                <label class="col-sm-2 offset-md-2" th:text="#{label.user.confirmPass}">confirm</label>
                 <span class="col-sm-5 col-lg-4"><input id="matchPassword" class="form-control" name="matchPassword" th:field="*{matchingPassword}" type="password" required="required"/></span>
             </div>
             <br/>
             <div class="row">
-                <button type="submit" class="btn btn-primary offset-sm-1 col-sm-6 col-md-3" th:text="#{label.form.submit}">submit</button>
+                <button type="submit" class="btn btn-primary offset-sm-1 col-sm-6 col-md-3 offset-md-4" th:text="#{label.form.submit}">submit</button>
             </div>
         </form>
         <br/>
-        <p class="row"><a class="btn btn-primary offset-sm-1 col-sm-6 col-md-3" th:href="@{/login}" th:text="#{label.form.loginLink}">login</a></p>
+        <p class="row"><a class="btn btn-primary offset-sm-1 col-sm-6 col-md-3 offset-md-4" th:href="@{/login}" th:text="#{label.form.loginLink}">login</a></p>
 
     </article>
 </div>

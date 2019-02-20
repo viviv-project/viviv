@@ -15,7 +15,7 @@
 
                 <div class="card">
                     <a th:href="${users.get(r + c).username}"><img class="card-img-top"
-                                                                     src="https://picsum.photos/200/150/?random"></a>
+                                                                   th:src="${users.get(r + c).getProfile().getAvatarImage()}"></a>
                     <div class="card-block">
                         <h4 class="card-title" th:text="${users.get(r + c).username}"></h4>
                         <div class="card-text">

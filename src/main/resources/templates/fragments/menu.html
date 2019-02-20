@@ -15,6 +15,11 @@
         <li class="nav-item">
             <a class="nav-link" href="/allUsers">Все анкеты</a>
         </li>
+        <li class="nav-item">
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/admin/}">Меню администратора</a>
+            </div>
+        </li>
     </ul>
 </div>
 </body>
