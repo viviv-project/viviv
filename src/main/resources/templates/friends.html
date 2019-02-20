@@ -15,16 +15,9 @@
 
                     <div class="card">
                         <a th:href="${friends.get(r + c).username}"><img class="card-img-top"
-                                                             src="https://picsum.photos/200/150/?random"></a>
+                                                                         th:src="${friends.get(r + c).getProfile().getAvatarImage()}"></a>
                         <div class="card-block">
                             <h4 class="card-title" th:text="${friends.get(r + c).username}"></h4>
-                            <div class="card-text">
-                                <form name="f" th:action="@{/addFriend}" method="post">
-                                    <input type="hidden" name="friendUsername" th:value="${friends.get(r + c).username}"/>
-                                    <button type="submit">В друзья</button>
-                                </form>
-                                <!--<td th:text="${friends.get(r + c).username}">...</td>-->
-                            </div>
                         </div>
                     </div>
             </div>
