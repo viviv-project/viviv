@@ -10,8 +10,30 @@
     /*margin-top:60px;*/
 /*}*/
 
+
 .login-card{
-    margin-left:40%;
-    height:360px;
-    width:400px;
+    display: inline-block;
+}
+
+.card{
+    display: inline-block;
+}
+
+.form-group.row{
+    position: relative;
+}
+
+.form-group > div > small {
+    position: absolute;
+    top: 25px;
+    left: 15px;
+}
+
+.custom-container{
+    width: 100%;
+    text-align: center;
+}
+
+.reg-text{
+    text-align: left;
 }

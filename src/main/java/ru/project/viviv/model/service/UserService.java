@@ -67,10 +67,10 @@ public class UserService {
     public User registerNewUserAccount(@NotNull UserDTO accountDto) throws EmailExistsException, UsernameExistsException {
 
         if (emailExists(accountDto.getEmail())) {
-            throw new EmailExistsException("Пользователь с таким email уже существует: " + accountDto.getEmail());
+            throw new EmailExistsException("message.regError", "email");
         }
         if (usernameExists(accountDto.getUsername())) {
-            throw new UsernameExistsException("Пользователь с таким никнеймом уже сущестует: " + accountDto.getUsername());
+            throw new UsernameExistsException("message.regUsernameError", "username");
         }
 
         User user = new User();
@@ -84,6 +84,7 @@ public class UserService {
         User savedUser = saveAndReturnUser(user);
         Profile profile = new Profile();
         profile.setId(savedUser.getId());
+        profile.setAvatarImage("/images/default.jpg");
         profileService.createProfile(profile);
         return savedUser;
     }

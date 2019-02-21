@@ -7,18 +7,22 @@
 </head>
 <body>
 
-<form th:action="@{/question}" th:object="${question}" method="POST">
-    <input type="hidden" th:value="*{username}" name="username" />
-    <div class="form-group">
-        <label for="question">Вопрос</label>
-        <textarea class="form-control" id="question" rows="3" th:field="*{question}"></textarea>
+<div class="container">
+    <div class="card">
+        <form th:action="@{/question}" th:object="${question}" method="POST">
+            <input type="hidden" th:value="*{username}" name="username"/>
+            <div class="form-group">
+                <label for="question">Вопрос</label>
+                <textarea class="form-control" id="question" rows="3" th:field="*{question}"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="answer">Ответ</label>
+                <textarea class="form-control" id="answer" rows="1" th:field="*{answer}"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить вопрос</button>
+        </form>
     </div>
-    <div class="form-group">
-        <label for="answer">Ответ</label>
-        <textarea class="form-control" id="answer" rows="1" th:field="*{answer}"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Сохранить вопрос</button>
-</form>
+</div>
 
 </body>
 </html>

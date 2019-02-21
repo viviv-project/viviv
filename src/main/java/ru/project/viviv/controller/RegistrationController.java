@@ -21,8 +21,7 @@ import ru.project.viviv.model.entity.User;
 import ru.project.viviv.model.entity.UserQuestion;
 import ru.project.viviv.model.entity.VerificationToken;
 import ru.project.viviv.model.service.UserService;
-import ru.project.viviv.validation.EmailExistsException;
-import ru.project.viviv.validation.UsernameExistsException;
+import ru.project.viviv.validation.ExistsException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -40,29 +39,29 @@ public class RegistrationController {
     @Autowired
     private ConverterDTO converterDTO;
 
+    private static final String REGISTRATION_FORM = "registration";
+
     @GetMapping(value = "/registration")
     public String showRegistrationForm(WebRequest request, Model model) {
         UserDTO userDto = new UserDTO();
         model.addAttribute("user", userDto);
-        return "registration";
+        return REGISTRATION_FORM;
     }
 
     @PostMapping(value = "/registration")
     public ModelAndView registerUserAccount(
             @ModelAttribute("user") @Valid UserDTO accountDto, BindingResult result) {
         if (result.hasErrors()) {
-            return new ModelAndView("registration", "user", accountDto);
+            return new ModelAndView(REGISTRATION_FORM, "user", accountDto);
         }
         User registered = null;
         try {
             registered = userService.registerNewUserAccount(accountDto);
-        } catch (UsernameExistsException e1) {
-            result.rejectValue("username", "message.regUsernameError");
-        } catch (EmailExistsException e1) {
-            result.rejectValue("email", "message.regError");
+        } catch (ExistsException e) {
+            result.rejectValue(e.getFieldError(), e.getMessage());
         }
         if (result.hasErrors()) {
-            return new ModelAndView("registration", "user", accountDto);
+            return new ModelAndView(REGISTRATION_FORM, "user", accountDto);
         }
         try {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered));

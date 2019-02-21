@@ -26,11 +26,11 @@ public class ProfileController {
     @Autowired
     private AnswerService answerService;
 
-    @PostMapping(value = "/question")
+    @PostMapping(value = "question")
     public ModelAndView addQuestion(@ModelAttribute("question") QuestionDTO questionDTO) {
         User user = userService.findByUsername(questionDTO.getUsername());
         List<UserQuestion> userQuestions = user.getProfile().getUserQuestions();
-        if (userQuestions.size() >= 3) {
+        if (userQuestions.size() >=3) {
             return new ModelAndView("redirect:/login");
         }
         if (questionDTO.getQuestion() != null && questionDTO.getAnswer() != null
@@ -47,7 +47,11 @@ public class ProfileController {
             user.getProfile().getUserQuestions().add(userQuestion);
             userService.saveUser(user);
         }
-        if (userQuestions.size() == 2) return new ModelAndView("redirect:/login");
+        if (userQuestions.size() == 3) {
+            return new ModelAndView("redirect:/login");
+        }
+        questionDTO.setAnswer(null);
+        questionDTO.setQuestion(null);
         return new ModelAndView("question", "question", questionDTO);
     }
 }

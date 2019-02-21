@@ -1,10 +1,8 @@
 package ru.project.viviv.validation;
 
+public class EmailExistsException extends ExistsException {
 
-@SuppressWarnings("serial")
-public class EmailExistsException extends Throwable {
-
-    public EmailExistsException(final String message) {
-        super(message);
+    public EmailExistsException(final String message, final String fieldError) {
+        super(message, fieldError);
     }
 }

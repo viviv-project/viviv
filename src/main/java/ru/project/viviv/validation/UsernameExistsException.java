@@ -1,9 +1,8 @@
 package ru.project.viviv.validation;
 
-@SuppressWarnings("serial")
-public class UsernameExistsException extends Throwable {
+public class UsernameExistsException extends ExistsException {
 
-    public UsernameExistsException(final String message) {
-        super(message);
+    public UsernameExistsException(final String message, final String fieldError) {
+        super(message, fieldError);
     }
 }

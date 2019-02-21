@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("{username}")
     public ModelAndView user(@PathVariable(name = "username") String username, Principal principal) {
         if (isForbidden(username, principal)) {
-            return new ModelAndView("/");
+            return new ModelAndView("closed-profile");
         }
         return new ModelAndView("profile", "username", username);
     }
@@ -46,7 +46,9 @@ public class UserController {
 
     private boolean isForbidden(String username, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        return !user.getUsername().equals(username);
+        if (user.getUsername().equals(username)) return false;
+        User potentialFriend = userService.findByUsername(username);
+        return !friendService.findAllUserFriends(user).contains(potentialFriend);
     }
 
     //todo метод для отладки, удалить позже
