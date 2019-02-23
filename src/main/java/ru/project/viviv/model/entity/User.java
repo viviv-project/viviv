@@ -1,6 +1,5 @@
 package ru.project.viviv.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,9 +9,9 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "vi_user")
-@Data
 public class User {
 
     @Id
@@ -43,7 +42,7 @@ public class User {
 
     public User() {
         super();
-        this.enabled=false;
+        this.enabled = false;
     }
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
@@ -52,5 +51,6 @@ public class User {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private Profile profile;
 }

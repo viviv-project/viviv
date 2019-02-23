@@ -24,8 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    private static final Logger log = LogManager.getLogger(CustomUserDetailsService.class);
-
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         boolean accountNonExpired = true;

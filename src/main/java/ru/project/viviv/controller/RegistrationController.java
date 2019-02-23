@@ -2,6 +2,7 @@ package ru.project.viviv.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-import ru.project.viviv.common.ConverterDTO;
+import ru.project.viviv.common.Converter;
 import ru.project.viviv.model.dto.QuestionDTO;
 import ru.project.viviv.model.dto.UserDTO;
 import ru.project.viviv.model.entity.OnRegistrationCompleteEvent;
@@ -37,7 +38,10 @@ public class RegistrationController {
     @Autowired
     private MessageSource messages;
     @Autowired
-    private ConverterDTO converterDTO;
+    private Converter converter;
+
+    @Value("${question.size}")
+    private int questionSize;
 
     private static final String REGISTRATION_FORM = "registration";
 
@@ -92,13 +96,13 @@ public class RegistrationController {
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
 
-        QuestionDTO questionDTO = new QuestionDTO();
-        questionDTO.setUsername(user.getUsername());
+        QuestionDTO questionDto = new QuestionDTO();
+        questionDto.setUsername(user.getUsername());
         List<UserQuestion> userQuestions = user.getProfile().getUserQuestions();
-        if (userQuestions.size() >= 3) {
+        if (userQuestions.size() >= questionSize) {
             return new ModelAndView("redirect:/login");
         }
-        return new ModelAndView("question", "question", questionDTO);
+        return new ModelAndView("question", "question", questionDto);
     }
 
 

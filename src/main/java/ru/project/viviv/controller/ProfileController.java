@@ -1,6 +1,7 @@
 package ru.project.viviv.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,11 +27,14 @@ public class ProfileController {
     @Autowired
     private AnswerService answerService;
 
+    @Value("${question.size}")
+    private int questionSize;
+
     @PostMapping(value = "question")
     public ModelAndView addQuestion(@ModelAttribute("question") QuestionDTO questionDTO) {
         User user = userService.findByUsername(questionDTO.getUsername());
         List<UserQuestion> userQuestions = user.getProfile().getUserQuestions();
-        if (userQuestions.size() >=3) {
+        if (userQuestions.size() >= questionSize) {
             return new ModelAndView("redirect:/login");
         }
         if (questionDTO.getQuestion() != null && questionDTO.getAnswer() != null
@@ -47,7 +51,7 @@ public class ProfileController {
             user.getProfile().getUserQuestions().add(userQuestion);
             userService.saveUser(user);
         }
-        if (userQuestions.size() == 3) {
+        if (userQuestions.size() == questionSize) {
             return new ModelAndView("redirect:/login");
         }
         questionDTO.setAnswer(null);

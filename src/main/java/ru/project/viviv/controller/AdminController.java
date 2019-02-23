@@ -30,7 +30,6 @@ public class AdminController {
         return "users";
     }
 
-    //todo заменить persistent entity на DTO
     @GetMapping(value = "/allUsers")
     public String showAllUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
