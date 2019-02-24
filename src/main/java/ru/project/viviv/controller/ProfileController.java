@@ -54,6 +54,7 @@ public class ProfileController {
         if (userQuestions.size() == questionSize) {
             return new ModelAndView("redirect:/login");
         }
+        questionDTO.setFilledCount(userQuestions.size() + 1);
         questionDTO.setAnswer(null);
         questionDTO.setQuestion(null);
         return new ModelAndView("question", "question", questionDTO);

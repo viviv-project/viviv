@@ -9,6 +9,7 @@
 
 <div class="container">
     <div class="card">
+        <h4  th:text="'Вопрос № ' + ${question.filledCount}"></h4>
         <form th:action="@{/question}" th:object="${question}" method="POST">
             <input type="hidden" th:value="*{username}" name="username"/>
             <div class="form-group">
@@ -19,8 +20,9 @@
                 <label for="answer">Ответ</label>
                 <textarea class="form-control" id="answer" rows="1" th:field="*{answer}"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Сохранить вопрос</button>
+            <button type="submit" class="btn btn-primary col-sm-4">Сохранить</button>
         </form>
+        <p class="text-left"><a href="/login" class="btn btn-info col-sm-4" style="margin-top: 10px">Пропустить</a></p>
     </div>
 </div>
 

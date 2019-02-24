@@ -102,8 +102,7 @@ public class RegistrationController {
         if (userQuestions.size() >= questionSize) {
             return new ModelAndView("redirect:/login");
         }
+        questionDto.setFilledCount(userQuestions.size() + 1);
         return new ModelAndView("question", "question", questionDto);
     }
-
-
 }

@@ -22,18 +22,18 @@ public class AdminController {
 
     @RequestMapping("/")
     public String user() {
-        return "admin";
+        return "admin/main-panel";
     }
 
     @RequestMapping("/users")
     public String profile() {
-        return "users";
+        return "admin/users";
     }
 
     @GetMapping(value = "/allUsers")
     public String showAllUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
-        return "admin-all-users";
+        return "admin/all-users";
     }
 
     @GetMapping(value = {"/user-edit"})
@@ -41,7 +41,7 @@ public class AdminController {
         final User user = userService.getUserById(userId);
         model.put("user", user);
         model.put("role", new RoleDTO());
-        return "user-edit";
+        return "admin/user-edit";
     }
 
     @PostMapping(value = {"/user-save"})

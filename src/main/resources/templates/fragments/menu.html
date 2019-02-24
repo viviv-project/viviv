@@ -4,7 +4,7 @@
 <head>
 </head>
 <body>
-<div th:fragment="menu" sec:authorize="isAuthenticated()">
+<div th:fragment="menu" sec:authorize="isAuthenticated()" class="custom-menu">
     <ul class="nav flex-column">
         <li class="nav-item">
             <a class="nav-link" th:href="${#authentication.getName()}">Моя страница</a>

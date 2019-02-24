@@ -7,4 +7,5 @@ public class QuestionDTO {
     private String username;
     private String question;
     private String answer;
+    private int filledCount;
 }
