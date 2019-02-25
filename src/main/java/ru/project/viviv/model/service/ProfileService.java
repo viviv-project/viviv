@@ -23,6 +23,10 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
+    public void saveProfile(@NotNull Profile profile) {
+        profileRepository.save(profile);
+    }
+
     public List<Profile> getAllProfiles() {
         return profileRepository.findAll();
     }

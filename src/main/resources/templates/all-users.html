@@ -19,7 +19,7 @@
 
                     <div class="card">
                         <a th:href="${users.get(r + c).getUserDto().username}"><img class="card-img-top"
-                                                                                    th:src="${users.get(r + c).getProfileDto().getAvatarImage()}"></a>
+                                                                                    th:src="@{'data:image/jpg;base64,' + ${users.get(r + c).getProfileDto().getAvatarImage()}}"></a>
                         <div class="card-block">
                             <h4 class="card-title" th:text="${users.get(r + c).getUserDto().username}"></h4>
                             <div class="card-text">

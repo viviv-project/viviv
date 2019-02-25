@@ -29,8 +29,9 @@ public class Profile {
     @Column
     private String middlename;
 
+    @Lob
     @Column(name = "avatar_image")
-    private String avatarImage;
+    private byte[] avatarImage;
 
     @Column(name = "date_added")
     @CreationTimestamp

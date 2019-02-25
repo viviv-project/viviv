@@ -1,5 +1,8 @@
 package ru.project.viviv.model.service;
 
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import ru.project.viviv.validation.UsernameExistsException;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -30,6 +34,8 @@ public class UserService {
     private FriendService friendService;
     @Autowired
     private ProfileService profileService;
+
+    private static final Logger log = LogManager.getLogger(UserService.class);
 
     public void saveUser(@NotNull User user) {
         userRepository.save(user);
@@ -84,7 +90,11 @@ public class UserService {
         User savedUser = saveAndReturnUser(user);
         Profile profile = new Profile();
         profile.setId(savedUser.getId());
-        profile.setAvatarImage("/images/default.jpg");
+        try {
+            profile.setAvatarImage(IOUtils.toByteArray(this.getClass().getResourceAsStream("/static/images/default.jpg")));
+        } catch (IOException e) {
+            log.error("Ошибка чтения картинки по умолчанию " + e.getMessage());
+        }
         profileService.createProfile(profile);
         return savedUser;
     }
@@ -137,4 +147,5 @@ public class UserService {
         Friend friend = new Friend(friendSource, friendTarget);
         friendService.saveFriend(friend);
     }
+
 }

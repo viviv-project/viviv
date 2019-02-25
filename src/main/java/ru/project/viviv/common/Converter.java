@@ -1,5 +1,6 @@
 package ru.project.viviv.common;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.project.viviv.model.dto.AnswerSuggestDTO;
@@ -22,7 +23,9 @@ public class Converter {
     }
 
     public ProfileDTO profileToDto(Profile profile) {
-        return modelMapper.map(profile, ProfileDTO.class);
+        ProfileDTO profileDto = modelMapper.map(profile, ProfileDTO.class);
+        profileDto.setAvatarImage(Base64.encodeBase64String(profile.getAvatarImage()));
+        return profileDto;
     }
 
     public AnswerSuggestDTO suggestAnswerToDto (SuggestAnswer suggestAnswer, User user, User target){

@@ -18,9 +18,10 @@ public class Image {
     private String id;
 
     //todo переименовать image
+    @Lob
     @Column
     @NotNull
-    private String image;
+    private byte[] image;
     @Column
     private String description;
     @Column
