@@ -1,6 +1,7 @@
 package ru.project.viviv.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,13 +10,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.project.viviv.common.Converter;
+import ru.project.viviv.model.dto.AnswerSuggestDTO;
 import ru.project.viviv.model.dto.FullInfoDTO;
+import ru.project.viviv.model.entity.SuggestAnswer;
 import ru.project.viviv.model.entity.User;
+import ru.project.viviv.model.entity.UserQuestion;
 import ru.project.viviv.model.service.FriendService;
+import ru.project.viviv.model.service.SuggestAnswerService;
 import ru.project.viviv.model.service.UserService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,11 +33,29 @@ public class UserController {
     private FriendService friendService;
     @Autowired
     private Converter converter;
+    @Autowired
+    private SuggestAnswerService suggestAnswerService;
+    @Value("${question.size}")
+    private int questionSize;
 
     @GetMapping("{username}")
     public ModelAndView user(@PathVariable(name = "username") String username, Principal principal) {
         if (isForbidden(username, principal)) {
-            return new ModelAndView("closed-profile");
+            User target = userService.findByUsername(username);
+            User user = userService.findByUsername(principal.getName());
+            List<UserQuestion> targetQuestions = target.getProfile().getUserQuestions();
+            List<SuggestAnswer> userSuggestAnswers = suggestAnswerService.findAllSuggestAnswers(user.getId(), targetQuestions);
+            List<String> filledQuestions = new ArrayList<>();
+            if (!userSuggestAnswers.isEmpty()){
+                filledQuestions = userSuggestAnswers.stream().map(a -> a.getUserQuestion().getQuestion().getQuestion()).collect(Collectors.toList());
+            }
+            List<String> finalFilledQuestions = filledQuestions;
+            List<AnswerSuggestDTO> answerSuggestsDTO = targetQuestions.stream()
+                    .map(targetQuestion -> new AnswerSuggestDTO(targetQuestion.getQuestion().getQuestion(), target.getUsername()))
+                    .filter(answerSuggest -> !finalFilledQuestions.contains(answerSuggest.getQuestion()))
+                    .collect(Collectors.toList());
+
+            return new ModelAndView("questionnaire", "answerSuggests", answerSuggestsDTO);
         }
         return new ModelAndView("profile", "username", username);
     }

@@ -21,6 +21,11 @@ public class SuggestAnswer {
     private Answer answer;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "request_user_id")
     private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "user_question_id")
+    private UserQuestion userQuestion;
+
 }

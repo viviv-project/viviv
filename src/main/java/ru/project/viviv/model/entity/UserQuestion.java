@@ -26,7 +26,7 @@ public class UserQuestion {
     @JoinColumn(name = "answer_id")
     private Answer answer;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_question_id")
-    private List<SuggestAnswer> suggestAnswers = new ArrayList<>();
+//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_question_id")
+//    private List<SuggestAnswer> suggestAnswers = new ArrayList<>();
 }

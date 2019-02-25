@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <tr th:each="answerSuggest : ${answerSuggests}">
+            <form th:action="@{/login}" method="post">
+                <label th:text="${answerSuggest.question}"></label>
+                <textarea class="form-control" rows="1" th:value="${answerSuggest.answerSuggest}"></textarea>
+                <input type="submit" class="btn btn-primary" value="Проверить"/>
+            </form>
+        </tr>
+
+        <!--<h4 th:text="'Вопрос № ' + ${question.filledCount}"></h4>-->
+        <!--<form th:action="@{/questionaire}" th:object="${answerSuggests}" method="POST">-->
+            <!--<div th:each="answerSuggest : ${answerSuggests}">-->
+                <!--<div class="form-group">-->
+                    <!--<label for="question" th:text="${answerSuggest.question}"></label>-->
+                    <!--<textarea class="form-control" id="question" rows="3" th:field="${answerSuggest.answerSuggest}"></textarea>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<label for="answer">Ответ</label>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<textarea class="form-control" id="answer" rows="1" th:field="*{answer}"></textarea>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<button type="submit" class="btn btn-primary col-sm-4">Сохранить</button>&ndash;&gt;-->
+            <!--</div>-->
+        <!--</form>-->
+        <!--<p class="text-left"><a href="/login" class="btn btn-info col-sm-4" style="margin-top: 10px">Пропустить</a></p>-->
+    </div>
+
+</div>
+</body>
+</html>
