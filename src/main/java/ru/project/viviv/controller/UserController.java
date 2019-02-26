@@ -1,6 +1,7 @@
 package ru.project.viviv.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,12 +9,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import ru.project.viviv.common.Converter;
+import ru.project.viviv.model.dto.*;
+import ru.project.viviv.model.entity.SuggestAnswer;
 import ru.project.viviv.model.entity.User;
+import ru.project.viviv.model.entity.UserQuestion;
 import ru.project.viviv.model.service.FriendService;
+import ru.project.viviv.model.service.SuggestAnswerService;
 import ru.project.viviv.model.service.UserService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -21,19 +29,48 @@ public class UserController {
     private UserService userService;
     @Autowired
     private FriendService friendService;
+    @Autowired
+    private Converter converter;
+    @Autowired
+    private SuggestAnswerService suggestAnswerService;
+    @Value("${question.size}")
+    private int questionSize;
 
     @GetMapping("{username}")
     public ModelAndView user(@PathVariable(name = "username") String username, Principal principal) {
-        if (isForbidden(username, principal)) {
-            return new ModelAndView("/");
+        User user = userService.findByUsername(principal.getName());
+        ProfileQuestionDTO profileQuestionDTO = converter.profileQuestionToDto(user);
+        if (username.equals(principal.getName())) {
+            return new ModelAndView("profile", "profileQuestion", profileQuestionDTO);
         }
-        return new ModelAndView("profile", "username", username);
+        User target = userService.findByUsername(username);
+        if (isForbidden(username, principal)) {
+            List<UserQuestion> targetQuestions = target.getProfile().getUserQuestions();
+            List<SuggestAnswer> userSuggestAnswers = suggestAnswerService.findAllSuggestAnswers(user.getId(), targetQuestions);
+            List<String> filledQuestions = new ArrayList<>();
+            if (!userSuggestAnswers.isEmpty()) {
+                filledQuestions = userSuggestAnswers.stream().map(a -> a.getUserQuestion().getQuestion().getQuestion()).collect(Collectors.toList());
+            }
+            List<String> finalFilledQuestions = filledQuestions;
+            List<AnswerSuggestDTO> answerSuggestsDTO = targetQuestions.stream()
+                    .map(targetQuestion -> new AnswerSuggestDTO(targetQuestion.getQuestion().getQuestion(), target.getUsername()))
+                    .filter(answerSuggest -> !finalFilledQuestions.contains(answerSuggest.getQuestion()))
+                    .collect(Collectors.toList());
+
+            return new ModelAndView("questionnaire", "answerSuggests", answerSuggestsDTO);
+        }
+        ProfileDTO profileDto = converter.profileToDto(target.getProfile());
+        ProfileViewDTO profileViewDto = new ProfileViewDTO();
+        profileViewDto.setProfileDto(profileDto);
+        profileViewDto.setUsername(target.getUsername());
+        return new ModelAndView("profile-view", "profileView", profileViewDto);
     }
 
     @GetMapping("friends")
     public ModelAndView friends(Principal principal) {
         List<User> friends = friendService.findAllUserFriends(userService.findByUsername(principal.getName()));
-        return new ModelAndView("friends", "friends", friends);
+        List<UserProfileDTO> friendsDto = friends.stream().map(friend -> new UserProfileDTO(converter.userToDto(friend), converter.profileToDto(friend.getProfile()))).collect(Collectors.toList());
+        return new ModelAndView("friends", "friends", friendsDto);
     }
 
     @GetMapping("allUsers")
@@ -41,12 +78,9 @@ public class UserController {
         List<User> users = userService.getAllUsers();
         users.remove(userService.findByUsername(principal.getName()));
         users.removeAll(friendService.findAllUserRelations(userService.findByUsername(principal.getName())));
-        return new ModelAndView("all-users", "users", users);
-    }
-
-    private boolean isForbidden(String username, Principal principal) {
-        User user = userService.findByUsername(principal.getName());
-        return !user.getUsername().equals(username);
+        users = users.stream().filter(User::getEnabled).filter(user -> user.getProfile().getUserQuestions().size() == questionSize).collect(Collectors.toList());
+        List<UserProfileDTO> usersDto = users.stream().map(user -> new UserProfileDTO(converter.userToDto(user), converter.profileToDto(user.getProfile()))).collect(Collectors.toList());
+        return new ModelAndView("all-users", "users", usersDto);
     }
 
     //todo метод для отладки, удалить позже
@@ -54,5 +88,12 @@ public class UserController {
     public RedirectView addFriend(@RequestParam String friendUsername, Principal principal) {
         userService.addFriend(principal.getName(), friendUsername);
         return new RedirectView("allUsers");
+    }
+
+    private boolean isForbidden(String username, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        if (user.getUsername().equals(username)) return false;
+        User potentialFriend = userService.findByUsername(username);
+        return !friendService.findAllUserFriends(user).contains(potentialFriend);
     }
 }

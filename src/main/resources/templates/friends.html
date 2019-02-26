@@ -2,28 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/main.css}"/>
+
     <title>Друзья</title>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<div th:replace="fragments/menu :: menu"></div>
+<div class="row">
+    <div th:replace="fragments/menu :: menu" class="col-4"></div>
 
-<div class="container">
-    <th:block th:with="colCount=${4}">
-        <div th:each="r : ${#numbers.sequence(0, friends.size(), colCount)}" class="row">
-            <div th:each="c : ${#numbers.sequence(0, colCount - 1)}" th:if="${r + c &lt; friends.size()}" class="col-3">
+    <div class="container col-8">
+        <th:block th:with="colCount=${4}">
+            <div th:each="r : ${#numbers.sequence(0, friends.size(), colCount)}" class="row">
+                <div th:each="c : ${#numbers.sequence(0, colCount - 1)}" th:if="${r + c &lt; friends.size()}" class="col-3">
 
-                    <div class="card">
-                        <a th:href="${friends.get(r + c).username}"><img class="card-img-top"
-                                                                         th:src="${friends.get(r + c).getProfile().getAvatarImage()}"></a>
+                    <div class="card custom-card">
+                        <a th:href="${friends.get(r + c).getUserDto().username}"><img class="card-img-top"
+                                                                                      th:src="@{'data:image/jpg;base64,' + ${friends.get(r + c).getProfileDto().getAvatarImage()}}"></a>
                         <div class="card-block">
-                            <h4 class="card-title" th:text="${friends.get(r + c).username}"></h4>
+                            <h4 class="card-title" th:text="${friends.get(r + c).getUserDto().username}"></h4>
                         </div>
                     </div>
+                </div>
             </div>
-        </div>
-    </th:block>
-
+        </th:block>
+    </div>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>

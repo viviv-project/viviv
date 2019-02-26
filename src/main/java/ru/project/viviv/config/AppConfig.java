@@ -8,11 +8,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
 public class AppConfig extends WebMvcAutoConfiguration {
-//
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-//        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-//    }
 
     @Bean
     public MessageSource messageSource() {

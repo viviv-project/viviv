@@ -6,7 +6,7 @@
     <title>Страница авторизации</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/webjars/bootstrap/4.2.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/webjars/bootstrap/4.2.1/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
     <link type="text/css" rel="stylesheet" th:href="@{/css/main.css}"/>
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
@@ -16,52 +16,38 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 
-<div class="card login-card">
-    <article class="card-body">
-        <h4 class="card-title text-center mb-4 mt-1">Авторизация</h4>
-        <hr>
-        <!--<div class="form-group">-->
-            <!--<div class="col-xs-15">-->
-                <!--<div>-->
-                    <!--<div th:if="${param.error} != null">-->
-                        <!--<div class="alert alert-danger col-xs-offset-1 col-xs-10">-->
-                            <!--Неправильный email или пароль.-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div th:if="${param.logout} != null">-->
-                        <!--<div class="alert alert-success col-xs-offset-1 col-xs-10">-->
-                            <!--Вы вышли из системы.-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <form  th:action="@{/authenticateTheUser}" method="POST">
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-                    </div>
-                    <input name="username"  class="form-control" placeholder="Email " type="email" required>
+<div class="custom-container">
+    <div class="card login-card col-sm-6 col-md-5 col-lg-4 col-xl-3">
+        <article class="card-body">
+            <h4 class="card-title text-center mb-4 mt-1">Авторизация</h4>
+            <hr>
+            <form th:action="@{/authenticateTheUser}" method="POST">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                        </div>
+                        <input name="username" class="form-control" placeholder="Email " type="email" required>
 
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input  name="password" placeholder="Пароль" class="form-control" type="password" required>
-
                 </div>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block"> Войти  </button>
-            </div>
-            <p class="text-center"><a href="#" class="btn">Забыли пароль?</a></p>
-            <p class="text-center" ><a href="/registration" class="btn btn-primary btn-block"> Регистрация </a></p>
-        </form>
-    </article>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                        </div>
+                        <input name="password" placeholder="Пароль" class="form-control" type="password" required>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Войти</button>
+                </div>
+                <p class="text-center"><a href="#" class="btn">Забыли пароль?</a></p>
+                <p class="text-center"><a href="/registration" class="btn btn-primary btn-block"> Регистрация </a></p>
+            </form>
+        </article>
+    </div>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
