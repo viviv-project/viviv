@@ -11,8 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.project.viviv.common.Converter;
 import ru.project.viviv.model.dto.AnswerSuggestDTO;
-import ru.project.viviv.model.dto.FullInfoDTO;
-import ru.project.viviv.model.dto.ProfileDTO;
+import ru.project.viviv.model.dto.ProfileQuestionDTO;
+import ru.project.viviv.model.dto.UserProfileDTO;
 import ru.project.viviv.model.entity.SuggestAnswer;
 import ru.project.viviv.model.entity.User;
 import ru.project.viviv.model.entity.UserQuestion;
@@ -57,14 +57,14 @@ public class UserController {
 
             return new ModelAndView("questionnaire", "answerSuggests", answerSuggestsDTO);
         }
-        ProfileDTO profileDto = converter.profileToDto(user.getProfile());
-        return new ModelAndView("profile", "profile", profileDto);
+        ProfileQuestionDTO profileQuestionDTO = converter.profileQuestionToDto(user);
+        return new ModelAndView("profile", "profileQuestion", profileQuestionDTO);
     }
 
     @GetMapping("friends")
     public ModelAndView friends(Principal principal) {
         List<User> friends = friendService.findAllUserFriends(userService.findByUsername(principal.getName()));
-        List<FullInfoDTO> friendsDto = friends.stream().map(friend -> new FullInfoDTO(converter.userToDto(friend), converter.profileToDto(friend.getProfile()))).collect(Collectors.toList());
+        List<UserProfileDTO> friendsDto = friends.stream().map(friend -> new UserProfileDTO(converter.userToDto(friend), converter.profileToDto(friend.getProfile()))).collect(Collectors.toList());
         return new ModelAndView("friends", "friends", friendsDto);
     }
 
@@ -74,7 +74,7 @@ public class UserController {
         users.remove(userService.findByUsername(principal.getName()));
         users.removeAll(friendService.findAllUserRelations(userService.findByUsername(principal.getName())));
         users = users.stream().filter(user -> user.getProfile().getUserQuestions().size() == questionSize).collect(Collectors.toList());
-        List<FullInfoDTO> usersDto = users.stream().map(user -> new FullInfoDTO(converter.userToDto(user), converter.profileToDto(user.getProfile()))).collect(Collectors.toList());
+        List<UserProfileDTO> usersDto = users.stream().map(user -> new UserProfileDTO(converter.userToDto(user), converter.profileToDto(user.getProfile()))).collect(Collectors.toList());
         return new ModelAndView("all-users", "users", usersDto);
     }
 

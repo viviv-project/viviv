@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import ru.project.viviv.common.Converter;
-import ru.project.viviv.model.dto.QuestionDTO;
+import ru.project.viviv.model.dto.QuestionFillDTO;
 import ru.project.viviv.model.dto.UserDTO;
 import ru.project.viviv.model.entity.OnRegistrationCompleteEvent;
 import ru.project.viviv.model.entity.User;
@@ -96,13 +96,13 @@ public class RegistrationController {
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
 
-        QuestionDTO questionDto = new QuestionDTO();
-        questionDto.setUsername(user.getUsername());
+        QuestionFillDTO questionFillDto = new QuestionFillDTO();
         List<UserQuestion> userQuestions = user.getProfile().getUserQuestions();
         if (userQuestions.size() >= questionSize) {
             return new ModelAndView("redirect:/login");
         }
-        questionDto.setFilledCount(userQuestions.size() + 1);
-        return new ModelAndView("question", "question", questionDto);
+        questionFillDto.setFilledCount(userQuestions.size() + 1);
+        questionFillDto.setUsername(user.getUsername());
+        return new ModelAndView("question", "question", questionFillDto);
     }
 }

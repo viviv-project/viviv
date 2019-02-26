@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class FullInfoDTO {
+public class UserProfileDTO {
     private UserDTO userDto;
     private ProfileDTO profileDto;
 }

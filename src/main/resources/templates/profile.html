@@ -22,10 +22,12 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="photo">
-                            <img th:src="@{'data:image/jpg;base64,' + ${profile.getAvatarImage()}}" alt="">
+                            <img th:src="@{'data:image/jpg;base64,' + ${profileQuestion.getProfileDto().getAvatarImage()}}"
+                                 alt="">
                             <form class="upload" method="POST" enctype="multipart/form-data" th:action="@{upload}">
                                 <label class="btn btn-primary">
-                                    Выбрать<input type="file" onchange="this.form.submit()" class="form-control-file" name="file" hidden>
+                                    Выбрать<input type="file" onchange="this.form.submit()" class="form-control-file"
+                                                  name="file" hidden>
                                 </label>
                             </form>
                         </div>
@@ -61,6 +63,28 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <h4 class="col-3">Вопросы</h4>
+                            <p class="text-center"><a href="/question" class="btn btn-primary btn-block">Заполнить</a></p>
+
+                            <!--<form method="" th:action="@{/questionFill}">-->
+                                <!--<input type="hidden" name="profileQuestionDto" th:field="${profileQuestion}">-->
+                                <!--<button type="submit">Заполнить</button>-->
+                                <!--&lt;!&ndash;<input type="submit">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<button name="question" type="submit" class="btn btn-primary btn-block" th:object="${profileQuestion}">Заполнить</button>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<label class="btn btn-primary">Заполнить&ndash;&gt;-->
+                                    <!--&lt;!&ndash;&lt;!&ndash;<input type="submit" hidden>&ndash;&gt;&ndash;&gt;-->
+                                <!--&lt;!&ndash;</label>&ndash;&gt;-->
+                            <!--</form>-->
+                        </div>
+                        <tr th:each="i : ${#numbers.sequence(profileQuestion.getQuestionsDto().size() - 1, 0, -1)}">
+                            <label th:text="${profileQuestion.getQuestionsDto().size() - i} + '. ' + ${profileQuestion.getQuestionsDto()[i].question}"></label>
+                            <p class="form-control" th:text="'Ответ: ' + ${profileQuestion.getQuestionsDto()[i].answer}"></p>
+                        </tr>
                     </div>
                 </div>
             </div>
