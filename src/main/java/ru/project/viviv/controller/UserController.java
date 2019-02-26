@@ -12,6 +12,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import ru.project.viviv.common.Converter;
 import ru.project.viviv.model.dto.AnswerSuggestDTO;
 import ru.project.viviv.model.dto.FullInfoDTO;
+import ru.project.viviv.model.dto.ProfileDTO;
 import ru.project.viviv.model.entity.SuggestAnswer;
 import ru.project.viviv.model.entity.User;
 import ru.project.viviv.model.entity.UserQuestion;
@@ -22,7 +23,6 @@ import ru.project.viviv.model.service.UserService;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -40,13 +40,13 @@ public class UserController {
 
     @GetMapping("{username}")
     public ModelAndView user(@PathVariable(name = "username") String username, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
         if (isForbidden(username, principal)) {
             User target = userService.findByUsername(username);
-            User user = userService.findByUsername(principal.getName());
             List<UserQuestion> targetQuestions = target.getProfile().getUserQuestions();
             List<SuggestAnswer> userSuggestAnswers = suggestAnswerService.findAllSuggestAnswers(user.getId(), targetQuestions);
             List<String> filledQuestions = new ArrayList<>();
-            if (!userSuggestAnswers.isEmpty()){
+            if (!userSuggestAnswers.isEmpty()) {
                 filledQuestions = userSuggestAnswers.stream().map(a -> a.getUserQuestion().getQuestion().getQuestion()).collect(Collectors.toList());
             }
             List<String> finalFilledQuestions = filledQuestions;
@@ -57,7 +57,8 @@ public class UserController {
 
             return new ModelAndView("questionnaire", "answerSuggests", answerSuggestsDTO);
         }
-        return new ModelAndView("profile", "username", username);
+        ProfileDTO profileDto = converter.profileToDto(user.getProfile());
+        return new ModelAndView("profile", "profile", profileDto);
     }
 
     @GetMapping("friends")

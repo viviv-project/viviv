@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="photo">
-                            <img th:src="@{images/default.jpg}" alt="">
+                            <img th:src="@{'data:image/jpg;base64,' + ${profile.getAvatarImage()}}" alt="">
                             <form class="upload" method="POST" enctype="multipart/form-data" th:action="@{upload}">
                                 <label class="btn btn-primary">
                                     Выбрать<input type="file" onchange="this.form.submit()" class="form-control-file" name="file" hidden>
