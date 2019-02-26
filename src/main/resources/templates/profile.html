@@ -8,7 +8,6 @@
 
     <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/css/main.css}"/>
-    <!--<script type="text/javascript" th:href="@{/js/upload.js}"></script>-->
     <title>Профиль</title>
 </head>
 <body class="bg-light">
@@ -16,12 +15,12 @@
 
 <div class="row">
     <div th:replace="fragments/menu :: menu" class="col-4"></div>
-    <!--<div class="site-main col-8">-->
+
     <div class="container col-8" sec:authorize="isAuthenticated()">
         <div class="section-inner start-page-content">
             <div class="page-header">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-4">
                         <div class="photo">
                             <img th:src="@{'data:image/jpg;base64,' + ${profile.getAvatarImage()}}" alt="">
                             <form class="upload" method="POST" enctype="multipart/form-data" th:action="@{upload}">
@@ -32,13 +31,13 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-8">
                         <div class="title-block">
                             <h1>
                                 <div th:text="${#authentication.name}"></div>
                             </h1>
 
-                            <div class="col-lg-3">
+                            <div>
                                 <ul class="info-list">
                                     <li><span class="title">Возраст</span><span class="value"> 30 </span></li>
                                     <li><span class="title">Пол</span><span class="value"> М </span></li>
@@ -52,15 +51,13 @@
                                     <li><span class="title">Интересы</span><span
                                             class="value">Разные</span></li>
                                 </ul>
-
-
                             </div>
 
                             <div class="block-title">
                                 <h3>Обо мне</h3>
                             </div>
-                            <div class="col-lg-3 about-me">
-                                <p>Привет. Здаесь будет написано немного обо мне.</p>
+                            <div>
+                                <p>Здесь будет написано немного обо мне.</p>
                             </div>
                         </div>
 

@@ -73,6 +73,7 @@ public class UserController {
         List<User> users = userService.getAllUsers();
         users.remove(userService.findByUsername(principal.getName()));
         users.removeAll(friendService.findAllUserRelations(userService.findByUsername(principal.getName())));
+        users = users.stream().filter(user -> user.getProfile().getUserQuestions().size() == questionSize).collect(Collectors.toList());
         List<FullInfoDTO> usersDto = users.stream().map(user -> new FullInfoDTO(converter.userToDto(user), converter.profileToDto(user.getProfile()))).collect(Collectors.toList());
         return new ModelAndView("all-users", "users", usersDto);
     }

@@ -43,9 +43,9 @@
     padding-left: 15px;
 }
 
-.avatar-pic {
-    width: 100px;
-}
+/*.avatar-pic {*/
+    /*width: 100px;*/
+/*}*/
 
 /* /Page Header */
 
@@ -68,12 +68,18 @@
 
 .info-list {
     display: inline-block;
-    min-width: 250px;
-    margin-left: 20px;
-    margin-top: 0px;
-    padding: 0;
+    /*min-width: 250px;*/
+    /*margin-left: 20px;*/
+    /*margin-top: 0px;*/
+    /*padding: 0;*/
     list-style: none;
 }
+
+/*.info-list > li > span {*/
+    /*display: block;*/
+    /*width: 50%;*/
+    /*float: left;*/
+/*}*/
 
 .info-list li .title {
     display: inline-block;
@@ -118,15 +124,19 @@
     /*margin: 0;*/
 /*}*/
 
-.title-block{
-    margin-top: 7%;
+.title-block {
+    margin-top: 20px;
     /*margin-left: 200px;*/
 }
 
-
-.about-me{
-    min-width: 500px;
+.photo {
+    margin-top: 20px;
 }
+
+
+/*.about-me{*/
+    /*min-width: 500px;*/
+/*}*/
 
 /*.upload{*/
     /*margin-left: -20%;*/
