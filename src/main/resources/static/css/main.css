@@ -129,10 +129,17 @@
     /*margin-left: 200px;*/
 }
 
-.photo {
+.photo > img {
     margin-top: 20px;
 }
 
+.custom-card {
+    width: 100%;
+}
+
+.profile-img {
+    width: 70%;
+}
 
 /*.about-me{*/
     /*min-width: 500px;*/

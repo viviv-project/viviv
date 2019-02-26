@@ -17,7 +17,7 @@
                 <div th:each="c : ${#numbers.sequence(0, colCount - 1)}" th:if="${r + c &lt; users.size()}"
                      class="col-3">
 
-                    <div class="card">
+                    <div class="card custom-card">
                         <a th:href="${users.get(r + c).getUserDto().username}"><img class="card-img-top"
                                                                                     th:src="@{'data:image/jpg;base64,' + ${users.get(r + c).getProfileDto().getAvatarImage()}}"></a>
                         <div class="card-block">
