@@ -10,9 +10,18 @@ public class AnswerSuggestDTO {
     private String username;
     private String question;
     private String answerSuggest;
+    private Boolean status;
 
-    public AnswerSuggestDTO(String question, String questionAuthor){
+    private Boolean access;
+
+    public AnswerSuggestDTO(String question, String questionAuthor, String username){
         this.question = question;
+        this.questionAuthor = questionAuthor;
+        this.username = username;
+    }
+
+    public AnswerSuggestDTO(Boolean access, String questionAuthor) {
+        this.access = access;
         this.questionAuthor = questionAuthor;
     }
 }

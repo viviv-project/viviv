@@ -19,4 +19,8 @@ public class SuggestAnswerService {
         return userQuestions.stream().map(userQuestion ->
                 suggestAnswerRepository.findByProfile_IdAndUserQuestion(profileId, userQuestion).orElse(null)).filter(Objects::nonNull).collect(Collectors.toList());
     }
+
+    public void createSuggestAnswer(SuggestAnswer suggestAnswer){
+        suggestAnswerRepository.save(suggestAnswer);
+    }
 }

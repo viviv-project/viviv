@@ -3,24 +3,22 @@ package ru.project.viviv.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.project.viviv.common.Converter;
 import ru.project.viviv.model.dto.*;
-import ru.project.viviv.model.entity.SuggestAnswer;
-import ru.project.viviv.model.entity.User;
-import ru.project.viviv.model.entity.UserQuestion;
+import ru.project.viviv.model.entity.*;
+import ru.project.viviv.model.service.AnswerService;
 import ru.project.viviv.model.service.FriendService;
 import ru.project.viviv.model.service.SuggestAnswerService;
 import ru.project.viviv.model.service.UserService;
 
 import java.security.Principal;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Controller
@@ -33,6 +31,8 @@ public class UserController {
     private Converter converter;
     @Autowired
     private SuggestAnswerService suggestAnswerService;
+    @Autowired
+    private AnswerService answerService;
     @Value("${question.size}")
     private int questionSize;
 
@@ -47,16 +47,32 @@ public class UserController {
         if (isForbidden(username, principal)) {
             List<UserQuestion> targetQuestions = target.getProfile().getUserQuestions();
             List<SuggestAnswer> userSuggestAnswers = suggestAnswerService.findAllSuggestAnswers(user.getId(), targetQuestions);
-            List<String> filledQuestions = new ArrayList<>();
-            if (!userSuggestAnswers.isEmpty()) {
-                filledQuestions = userSuggestAnswers.stream().map(a -> a.getUserQuestion().getQuestion().getQuestion()).collect(Collectors.toList());
+            Map<String, AnswerSuggestDTO> existsAnswerSuggestsDto = new HashMap<>();
+            if (userSuggestAnswers != null) {
+                existsAnswerSuggestsDto = userSuggestAnswers.stream()
+                        .map(suggestAnswer -> converter.suggestAnswerToDto(suggestAnswer, user, target))
+                        .collect(Collectors.toMap(AnswerSuggestDTO::getQuestion, a -> a));
             }
-            List<String> finalFilledQuestions = filledQuestions;
-            List<AnswerSuggestDTO> answerSuggestsDTO = targetQuestions.stream()
-                    .map(targetQuestion -> new AnswerSuggestDTO(targetQuestion.getQuestion().getQuestion(), target.getUsername()))
-                    .filter(answerSuggest -> !finalFilledQuestions.contains(answerSuggest.getQuestion()))
-                    .collect(Collectors.toList());
 
+            Map<String, AnswerSuggestDTO> finalExistsAnswerSuggestsDto = existsAnswerSuggestsDto;
+            AtomicInteger counter = new AtomicInteger(0);
+            List<AnswerSuggestDTO> answerSuggestsDTO = targetQuestions.stream()
+                    .map(targetQuestion -> {
+                        if (finalExistsAnswerSuggestsDto.keySet().contains(targetQuestion.getQuestion().getQuestion())) {
+                            counter.incrementAndGet();
+                            return finalExistsAnswerSuggestsDto.get(targetQuestion.getQuestion().getQuestion());
+                        } else {
+                            return new AnswerSuggestDTO(targetQuestion.getQuestion().getQuestion(), target.getUsername(), user.getUsername());
+                        }
+                    })
+                    .collect(Collectors.toList());
+            if (counter.get() == questionSize){
+                int rightCount = (int) answerSuggestsDTO.stream().filter(answer -> answer.getStatus().equals(true)).count();
+                if (questionSize == rightCount) {
+                    userService.addFriend(user.getUsername(), target.getUsername());
+                    answerSuggestsDTO.add(new AnswerSuggestDTO(true, target.getUsername()));
+                }
+            }
             return new ModelAndView("questionnaire", "answerSuggests", answerSuggestsDTO);
         }
         ProfileDTO profileDto = converter.profileToDto(target.getProfile());
@@ -64,6 +80,26 @@ public class UserController {
         profileViewDto.setProfileDto(profileDto);
         profileViewDto.setUsername(target.getUsername());
         return new ModelAndView("profile-view", "profileView", profileViewDto);
+    }
+
+    @PostMapping("questionnaire")
+    public ModelAndView questionnaire(@ModelAttribute("answerSuggest") AnswerSuggestDTO answerSuggestDto) {
+        Profile targetProfile = userService.findByUsername(answerSuggestDto.getQuestionAuthor()).getProfile();
+        Profile userProfile = userService.findByUsername(answerSuggestDto.getUsername()).getProfile();
+        targetProfile.getUserQuestions()
+                .forEach(targetQuestion -> {
+                    if (targetQuestion.getQuestion().getQuestion().equals(answerSuggestDto.getQuestion())
+                            && targetQuestion.getAnswer().getAnswer().equals(answerSuggestDto.getAnswerSuggest())) {
+                        SuggestAnswer suggestAnswerTrue = new SuggestAnswer(targetQuestion.getAnswer(), userProfile, targetQuestion, true);
+                        suggestAnswerService.createSuggestAnswer(suggestAnswerTrue);
+                    } else if (targetQuestion.getQuestion().getQuestion().equals(answerSuggestDto.getQuestion())) {
+                        SuggestAnswer suggestAnswerFalse = new SuggestAnswer(answerService.findAnswerByName(
+                                answerSuggestDto.getAnswerSuggest()).orElse(
+                                new Answer(answerSuggestDto.getAnswerSuggest())), userProfile, targetQuestion, false);
+                        suggestAnswerService.createSuggestAnswer(suggestAnswerFalse);
+                    }
+                });
+        return new ModelAndView("redirect:/" + answerSuggestDto.getQuestionAuthor());
     }
 
     @GetMapping("friends")

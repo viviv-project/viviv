@@ -66,7 +66,6 @@ public class ProfileController {
     public ModelAndView fillingQuestions(Principal principal) {
         QuestionFillDTO questionFillDto = new QuestionFillDTO();
         questionFillDto.setUsername(principal.getName());
-//        questionFillDto.setFilledCount(profileQuestionDto.getQuestionsDto() == null ? 1 : (profileQuestionDto.getQuestionsDto().size() + 1));
         return addQuestion(questionFillDto);
     }
 }
