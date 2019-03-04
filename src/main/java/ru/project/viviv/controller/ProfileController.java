@@ -1,5 +1,6 @@
 package ru.project.viviv.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import ru.project.viviv.model.dto.ProfileEditDTO;
 import ru.project.viviv.model.dto.QuestionFillDTO;
 import ru.project.viviv.model.entity.Answer;
 import ru.project.viviv.model.entity.Question;
@@ -68,4 +70,11 @@ public class ProfileController {
         questionFillDto.setUsername(principal.getName());
         return addQuestion(questionFillDto);
     }
+
+    @PostMapping(value = "{username}/editProfile")
+    public ModelAndView editProfile(@ModelAttribute("profileEdit") ProfileEditDTO profileEditDto ){
+
+        return new ModelAndView("edit-profile");
+    }
+
 }

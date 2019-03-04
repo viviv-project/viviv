@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/main.css}"/>
+    <title>Профиль</title>
+</head>
+<body class="bg-light">
+<div th:replace="fragments/header :: header"></div>
+
+<div class="row">
+    <div th:replace="fragments/menu :: menu" class="col-4"></div>
+
+    <div class="container col-8" sec:authorize="isAuthenticated()">
+        <div class="section-inner start-page-content">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="photo">
+                            <img class="profile-img" th:src="@{'data:image/jpg;base64,' + ${profileQuestion.getProfileDto().getAvatarImage()}}"
+                                 alt="">
+                            <form class="upload" method="POST" enctype="multipart/form-data" th:action="@{upload}">
+                                <label class="btn btn-primary">
+                                    Выбрать<input type="file" onchange="this.form.submit()" class="form-control-file"
+                                                  name="file" hidden>
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-8">
+                        <div class="title-block">
+                            <h1>
+                                <div th:text="${#authentication.name}"></div>
+                            </h1>
+
+                            <div>
+                                <ul class="info-list">
+                                    <form th:action="@{/edit-profile}" method="POST">
+                                        <input name="username" class="form-control" placeholder="Email " type="email" required>
+                                        <li><span class="title">Имя</span><input class="value" th:text="${profileQuestion.getProfileDto().getFirstname()}">  </input></li>
+                                        <li><span class="title">Фамилия</span><input class="value" th:text="${profileQuestion.getProfileDto().getLastname()}">  </input></li>
+                                        <li><span class="title">Возраст</span><input class="value" th:text="${profileQuestion.getProfileDto().getAge()}">  </input></li>
+                                        <li><span class="title">Пол</span><input class="value" th:text="${profileQuestion.getProfileDto().getCharSex()}"> </input></li>
+                                        <li><span class="title">Телефон</span><input class="value" th:text="${profileQuestion.getProfileDto().getPhone()}"></input></li>
+
+                                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                                    </form>
+
+                                </ul>
+                            </div>
+
+                            <div class="block-title">
+                                <h3>Обо мне</h3>
+                            </div>
+                            <div>
+                                <p>Здесь будет написано немного обо мне.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <hr>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <h4 class="col-3">Вопросы</h4>
+                            <p class="text-center"><a href="/question" class="btn btn-primary btn-block">Заполнить</a>
+                            </p>
+                        </div>
+                        <tr th:each="i : ${#numbers.sequence(profileQuestion.getQuestionsDto().size() - 1, 0, -1)}">
+                            <label th:text="${profileQuestion.getQuestionsDto().size() - i} + '. ' + ${profileQuestion.getQuestionsDto()[i].question}"></label>
+                            <p class="form-control"
+                               th:text="'Ответ: ' + ${profileQuestion.getQuestionsDto()[i].answer}"></p>
+                        </tr>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

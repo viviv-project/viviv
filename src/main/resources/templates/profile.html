@@ -22,7 +22,8 @@
                 <div class="row">
                     <div class="col-4">
                         <div class="photo">
-                            <img class="profile-img" th:src="@{'data:image/jpg;base64,' + ${profileQuestion.getProfileDto().getAvatarImage()}}"
+                            <img class="profile-img"
+                                 th:src="@{'data:image/jpg;base64,' + ${profileQuestion.getProfileDto().getAvatarImage()}}"
                                  alt="">
                             <form class="upload" method="POST" enctype="multipart/form-data" th:action="@{upload}">
                                 <label class="btn btn-primary">
@@ -36,23 +37,43 @@
                     <div class="col-8">
                         <div class="title-block">
                             <h1>
-                                <div th:text="${#authentication.name}"></div>
+                                <div th:text="${#authentication.name}">
+                                </div>
+
                             </h1>
 
                             <div>
-                                <ul class="info-list">
-                                    <li><span class="title">Возраст</span><span class="value"> 30 </span></li>
-                                    <li><span class="title">Пол</span><span class="value"> М </span></li>
-                                    <li><span class="title">Страна</span><span class="value"> Россия </span></li>
-                                    <li><span class="title">Город</span><span
-                                            class="value"> Москва </span></li>
-                                    <li><span class="title">E-mail</span><span class="value"><a
-                                            href="mailto:"></a></span></li>
-                                    <li><span class="title">Телефон</span><span class="value">+7-800-222-22-22</span>
-                                    </li>
-                                    <li><span class="title">Интересы</span><span
-                                            class="value">Разные</span></li>
-                                </ul>
+                                <form th:action="${#authentication.name + '/editProfile'}" th:object="${profileQuestion.profileEditDto}" method="post">
+                                    <ul class="info-list">
+                                        <li><span class="title">Имя</span><span class="value" name="firstname" id="firstname"
+                                                                                th:value="${profileQuestion.getProfileDto().getFirstname()}">  </span>
+                                        </li>
+                                        <li><span class="title">Фамилия</span><span class="value" name="lastname" id="lastname"
+                                                                                    th:value="${profileQuestion.getProfileDto().getLastname()}">  </span>
+                                        </li>
+                                        <li><span class="title">Возраст</span><div class="value" name="age" id="age"
+                                                                                    th:value="${profileQuestion.getProfileDto().age}">  </div>
+                                        </li>
+                                        <li><span class="title">Пол</span><span class="value" name="cSex" id="cSex"
+                                                                                th:value="${profileQuestion.getProfileDto().getCharSex()}"> </span>
+                                        </li>
+                                        <!--<li><span class="title">Страна</span><span class="value">  </span></li>-->
+                                        <!--<li><span class="title">Город</span><span-->
+                                        <!--class="value">  </span></li>-->
+                                        <li><span class="title">E-mail</span><span class="value"><a
+                                                th:href="'mailto:' + ${profileQuestion.getEmail()}"
+                                                th:text="${profileQuestion.getEmail()}"></a></span></li>
+                                        <li><span class="title">Телефон</span><span class="value" name="phone" id="phone"
+                                                                                    th:value="${profileQuestion.getProfileDto().phone}"></span>
+                                        </li>
+                                        <!--<li><span class="title">Интересы</span><span-->
+                                        <!--class="value">Разные</span></li>-->
+                                    </ul>
+                                    <button type="submit" class="btn btn-primary btn-block">Редактировать</button>
+
+                                    <!--<p class="text-center"><a href="/edit-profile" class="btn btn-primary btn-block">Редактировать</a>-->
+                                    </p>
+                                </form>
                             </div>
 
                             <div class="block-title">

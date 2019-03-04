@@ -1,8 +1,9 @@
 package ru.project.viviv.model.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -28,6 +29,16 @@ public class Profile {
 
     @Column
     private String middlename;
+
+    @Column(name = "birth_date")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime birthDate;
+
+    @Column
+    private Integer sex;
+
+    @Column
+    private String phone;
 
     @Lob
     @Column(name = "avatar_image")
