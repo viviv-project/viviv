@@ -86,6 +86,8 @@ public class UserController {
     public ModelAndView questionnaire(@ModelAttribute("answerSuggest") AnswerSuggestDTO answerSuggestDto) {
         Profile targetProfile = userService.findByUsername(answerSuggestDto.getQuestionAuthor()).getProfile();
         Profile userProfile = userService.findByUsername(answerSuggestDto.getUsername()).getProfile();
+        if (suggestAnswerService.isStatusExists(true) || suggestAnswerService.isStatusExists(false)) return new ModelAndView("redirect:/");
+
         targetProfile.getUserQuestions()
                 .forEach(targetQuestion -> {
                     if (targetQuestion.getQuestion().getQuestion().equals(answerSuggestDto.getQuestion())

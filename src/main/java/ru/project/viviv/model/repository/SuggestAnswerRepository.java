@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface SuggestAnswerRepository extends JpaRepository<SuggestAnswer, String> {
     List<SuggestAnswer> findAllByProfile_IdAndAndUserQuestion(String profileId, UserQuestion userQuestion);
     Optional<SuggestAnswer> findByProfile_IdAndUserQuestion(String profileId, UserQuestion userQuestion);
+    Boolean existsByStatus(boolean status);
 }
