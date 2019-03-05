@@ -91,6 +91,10 @@
     color: #9e9e9e;
 }
 
+.info-list li div {
+    display: inline-block;
+}
+
 /*.row {*/
     /*margin-right: -5px;*/
     /*margin-left: -5px;*/

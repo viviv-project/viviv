@@ -9,7 +9,7 @@ import ru.project.viviv.model.entity.SuggestAnswer;
 import ru.project.viviv.model.entity.User;
 import ru.project.viviv.model.entity.UserQuestion;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -30,13 +30,15 @@ public class Converter {
     public ProfileDTO profileToDto(Profile profile) {
         ProfileDTO profileDto = modelMapper.map(profile, ProfileDTO.class);
         profileDto.setAvatarImage(Base64.encodeBase64String(profile.getAvatarImage()));
-        LocalDateTime birthDate = profile.getBirthDate();
-        LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
-        int age = (int)LocalDateTime.from(birthDate).until(now, ChronoUnit.YEARS);
-        profileDto.setAge(age);
-        if (profile.getSex() != null)
-        profileDto.setCharSex(profile.getSex() == 0 ? 'M' : 'Ж');
-
+        if (profile.getBirthDate() != null) {
+            LocalDate birthDate = profile.getBirthDate();
+            LocalDate now = LocalDate.now(ZoneId.systemDefault());
+            int age = (int) LocalDate.from(birthDate).until(now, ChronoUnit.YEARS);
+            profileDto.setAge(age);
+        }
+        if (profile.getSex() != null) {
+            profileDto.setCharSex(profile.getSex() == 0 ? 'M' : 'Ж');
+        }
         return profileDto;
     }
 
@@ -70,7 +72,6 @@ public class Converter {
         profileQuestionDto.setQuestionsDto(questionsDto);
         profileQuestionDto.setProfileDto(profileDto);
         profileQuestionDto.setEmail(user.getEmail());
-        profileQuestionDto.setProfileEditDto(new ProfileEditDTO());
         return profileQuestionDto;
     }
 }

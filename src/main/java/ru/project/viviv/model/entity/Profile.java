@@ -1,12 +1,13 @@
 package ru.project.viviv.model.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,8 @@ public class Profile {
     private String middlename;
 
     @Column(name = "birth_date")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime birthDate;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate birthDate;
 
     @Column
     private Integer sex;

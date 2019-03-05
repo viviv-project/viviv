@@ -11,10 +11,9 @@ public class ProfileDTO {
     private String lastname;
     private String avatarImage;
     private String middlename;
-    private LocalDateTime birthDate;
+    private String birthDate;
     private int sex;
     private String phone;
     private int age;
     private Character charSex;
-
 }

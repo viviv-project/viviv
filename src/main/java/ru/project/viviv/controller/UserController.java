@@ -66,7 +66,7 @@ public class UserController {
                         }
                     })
                     .collect(Collectors.toList());
-            if (counter.get() == questionSize){
+            if (counter.get() == questionSize) {
                 int rightCount = (int) answerSuggestsDTO.stream().filter(answer -> answer.getStatus().equals(true)).count();
                 if (questionSize == rightCount) {
                     userService.addFriend(user.getUsername(), target.getUsername());
@@ -119,7 +119,6 @@ public class UserController {
         return new ModelAndView("all-users", "users", usersDto);
     }
 
-    //todo метод для отладки, удалить позже
     @PostMapping("addFriend")
     public RedirectView addFriend(@RequestParam String friendUsername, Principal principal) {
         userService.addFriend(principal.getName(), friendUsername);
