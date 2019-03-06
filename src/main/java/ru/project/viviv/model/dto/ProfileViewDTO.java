@@ -6,4 +6,5 @@ import lombok.Data;
 public class ProfileViewDTO {
     private ProfileDTO profileDto;
     private String username;
+    private String email;
 }

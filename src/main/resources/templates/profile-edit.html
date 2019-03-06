@@ -20,7 +20,7 @@
         <div class="section-inner start-page-content">
             <div class="page-header">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-md-4">
                         <div class="photo">
                             <img class="profile-img"
                                  th:src="@{'data:image/jpg;base64,' + ${profileDto.getAvatarImage()}}"
@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-                    <div class="col-8">
+                    <div class="col-sm-8">
                         <div class="title-block">
                             <h1>
                                 <div th:text="${#authentication.name}"></div>
@@ -66,11 +66,11 @@
                                                        th:field="${profileDto.birthDate}">
                                             </div>
                                         </li>
-                                        <li><span class="title">Телефон</span><input class="value" type="number"
+                                        <li><span class="title">Телефон</span><input class="value" type="tel" pattern="[0-9]{10}" placeholder="10 цифр"
                                                                                      th:field="${profileDto.phone}">
                                         </li>
                                     </ul>
-                                    <button type="submit" class="btn btn-primary btn-block col-4">Сохранить</button>
+                                    <button type="submit" class="btn btn-primary btn-block col-sm-8 col-md-4">Сохранить</button>
                                 </form>
                             </div>
                         </div>

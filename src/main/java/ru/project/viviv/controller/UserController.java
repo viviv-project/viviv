@@ -79,6 +79,7 @@ public class UserController {
         ProfileViewDTO profileViewDto = new ProfileViewDTO();
         profileViewDto.setProfileDto(profileDto);
         profileViewDto.setUsername(target.getUsername());
+        profileViewDto.setEmail(target.getEmail());
         return new ModelAndView("profile-view", "profileView", profileViewDto);
     }
 
