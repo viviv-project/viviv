@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="ru">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/main.css}"/>
+    <title>Профиль</title>
+</head>
+<body class="bg-light">
+<div th:replace="fragments/header :: header"></div>
+
+<div class="row">
+    <div th:replace="fragments/menu :: menu" class="col-4"></div>
+
+    <div class="container col-8" sec:authorize="isAuthenticated()">
+        <div class="section-inner start-page-content">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="photo">
+                            <img class="profile-img"
+                                 th:src="@{'data:image/jpg;base64,' + ${profileDto.getAvatarImage()}}"
+                                 alt="">
+                            <form class="upload" method="POST" enctype="multipart/form-data" th:action="@{upload}">
+                                <label class="btn btn-primary">
+                                    Выбрать<input type="file" onchange="this.form.submit()" class="form-control-file"
+                                                  name="file" hidden>
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-8">
+                        <div class="title-block">
+                            <h1>
+                                <div th:text="${#authentication.name}"></div>
+                            </h1>
+
+                            <div>
+                                <form th:action="@{/editProfile}" th:object="${profileDto}" method="post">
+                                    <ul class="info-list">
+                                        <li><span class="title">Имя</span><input class="value"
+                                                                                 th:field="${profileDto.firstname}">
+                                        </li>
+                                        <li><span class="title">Фамилия</span><input class="value"
+                                                                                     th:field="${profileDto.lastname}">
+                                        </li>
+                                        <li><span class="title">Пол</span>
+                                                <div class="radio">
+                                                    <label><input type="radio" name="optradio" value="М" checked
+                                                                  th:field="${profileDto.charSex}">M</label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label><input type="radio" name="optradio" value="Ж"
+                                                                  th:field="${profileDto.charSex}">Ж</label>
+                                                </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <label th:for="${profileDto.birthDate}">Дата рождения</label>
+                                                <input type="date" class="form-control"
+                                                       th:field="${profileDto.birthDate}">
+                                            </div>
+                                        </li>
+                                        <li><span class="title">Телефон</span><input class="value" type="tel" pattern="[0-9]{10}" placeholder="10 цифр"
+                                                                                     th:field="${profileDto.phone}">
+                                        </li>
+                                    </ul>
+                                    <button type="submit" class="btn btn-primary btn-block col-sm-8 col-md-4">Сохранить</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

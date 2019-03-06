@@ -20,14 +20,14 @@
         <div class="section-inner start-page-content">
             <div class="page-header">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-md-4">
                         <div class="photo">
                             <img class="profile-img" th:src="@{'data:image/jpg;base64,' + ${profileView.getProfileDto().getAvatarImage()}}"
                                  alt="">
                         </div>
                     </div>
 
-                    <div class="col-8">
+                    <div class="col-sm-8">
                         <div class="title-block">
                             <h1>
                                 <div th:text="${profileView.username}"></div>
@@ -35,25 +35,20 @@
 
                             <div>
                                 <ul class="info-list">
-                                    <li><span class="title">Возраст</span><span class="value"> 30 </span></li>
-                                    <li><span class="title">Пол</span><span class="value"> М </span></li>
-                                    <li><span class="title">Страна</span><span class="value"> Россия </span></li>
-                                    <li><span class="title">Город</span><span
-                                            class="value"> Москва </span></li>
-                                    <li><span class="title">E-mail</span><span class="value"><a
-                                            href="mailto:"></a></span></li>
-                                    <li><span class="title">Телефон</span><span class="value">+7-800-222-22-22</span>
-                                    </li>
-                                    <li><span class="title">Интересы</span><span
-                                            class="value">Разные</span></li>
-                                </ul>
-                            </div>
 
-                            <div class="block-title">
-                                <h3>Обо мне</h3>
-                            </div>
-                            <div>
-                                <p>Здесь будет написано немного обо мне.</p>
+                                    <li><span class="title">Имя</span><span class="value" th:text="${profileView.getProfileDto().getFirstname()}">  </span>
+                                    </li>
+                                    <li><span class="title">Фамилия</span><span class="value" th:text="${profileView.getProfileDto().getLastname()}">  </span>
+                                    </li>
+                                    <li th:if="${profileView.profileDto.age == 0}"><span class="title">Возраст</span><span class="value"></span></li>
+                                    <li th:unless="${profileView.profileDto.age == 0}"><span class="title">Возраст</span><span class="value" th:text="${profileView.profileDto.age}"></span></li>
+                                    <li><span class="title">Пол</span><span class="value" th:text="${profileView.profileDto.charSex}"></span></li>
+                                    <li><span class="title">E-mail</span><span class="value"><a
+                                            th:href="'mailto:' + ${profileView.getEmail()}"
+                                            th:text="${profileView.getEmail()}"></a></span></li>
+                                    <li><span class="title">Телефон</span><span class="value" th:text="${profileView.getProfileDto().phone}"></span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
 

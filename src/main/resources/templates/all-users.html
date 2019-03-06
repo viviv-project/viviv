@@ -22,14 +22,6 @@
                                                                                     th:src="@{'data:image/jpg;base64,' + ${users.get(r + c).getProfileDto().getAvatarImage()}}"></a>
                         <div class="card-block">
                             <h4 class="card-title" th:text="${users.get(r + c).getUserDto().username}"></h4>
-                            <div class="card-text">
-                                <form name="f" th:action="@{/addFriend}" method="post">
-                                    <input type="hidden" name="friendUsername"
-                                           th:value="${users.get(r + c).getUserDto().username}"/>
-                                    <button type="submit">В друзья</button>
-                                </form>
-                                <!--<td th:text="${friends.get(r + c).username}">...</td>-->
-                            </div>
                         </div>
                     </div>
                 </div>

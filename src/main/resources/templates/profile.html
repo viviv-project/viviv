@@ -20,20 +20,15 @@
         <div class="section-inner start-page-content">
             <div class="page-header">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-md-4">
                         <div class="photo">
-                            <img class="profile-img" th:src="@{'data:image/jpg;base64,' + ${profileQuestion.getProfileDto().getAvatarImage()}}"
+                            <img class="profile-img"
+                                 th:src="@{'data:image/jpg;base64,' + ${profileQuestion.getProfileDto().getAvatarImage()}}"
                                  alt="">
-                            <form class="upload" method="POST" enctype="multipart/form-data" th:action="@{upload}">
-                                <label class="btn btn-primary">
-                                    Выбрать<input type="file" onchange="this.form.submit()" class="form-control-file"
-                                                  name="file" hidden>
-                                </label>
-                            </form>
                         </div>
                     </div>
 
-                    <div class="col-8">
+                    <div class="col-sm-8">
                         <div class="title-block">
                             <h1>
                                 <div th:text="${#authentication.name}"></div>
@@ -41,25 +36,20 @@
 
                             <div>
                                 <ul class="info-list">
-                                    <li><span class="title">Возраст</span><span class="value"> 30 </span></li>
-                                    <li><span class="title">Пол</span><span class="value"> М </span></li>
-                                    <li><span class="title">Страна</span><span class="value"> Россия </span></li>
-                                    <li><span class="title">Город</span><span
-                                            class="value"> Москва </span></li>
-                                    <li><span class="title">E-mail</span><span class="value"><a
-                                            href="mailto:"></a></span></li>
-                                    <li><span class="title">Телефон</span><span class="value">+7-800-222-22-22</span>
+                                    <li><span class="title">Имя</span><span class="value" th:text="${profileQuestion.getProfileDto().getFirstname()}">  </span>
                                     </li>
-                                    <li><span class="title">Интересы</span><span
-                                            class="value">Разные</span></li>
+                                    <li><span class="title">Фамилия</span><span class="value" th:text="${profileQuestion.getProfileDto().getLastname()}">  </span>
+                                    </li>
+                                    <li th:if="${profileQuestion.profileDto.age == 0}"><span class="title">Возраст</span><span class="value"></span></li>
+                                    <li th:unless="${profileQuestion.profileDto.age == 0}"><span class="title">Возраст</span><span class="value" th:text="${profileQuestion.profileDto.age}"></span></li>
+                                    <li><span class="title">Пол</span><span class="value" th:text="${profileQuestion.profileDto.charSex}"></span></li>
+                                    <li><span class="title">E-mail</span><span class="value"><a
+                                            th:href="'mailto:' + ${profileQuestion.getEmail()}"
+                                            th:text="${profileQuestion.getEmail()}"></a></span></li>
+                                    <li><span class="title">Телефон</span><span class="value" th:text="${profileQuestion.getProfileDto().phone}"></span>
+                                    </li>
                                 </ul>
-                            </div>
-
-                            <div class="block-title">
-                                <h3>Обо мне</h3>
-                            </div>
-                            <div>
-                                <p>Здесь будет написано немного обо мне.</p>
+                                <p class="text-center col-sm-8 col-md-4"><a th:href="${'/editProfile'}" class="btn btn-primary btn-block">Редактировать</a></p>
                             </div>
                         </div>
 
@@ -69,8 +59,8 @@
                 <div class="row" style="margin-top: 10px">
                     <div class="col-sm-6">
                         <div class="row">
-                            <h4 class="col-3">Вопросы</h4>
-                            <p class="text-center"><a href="/question" class="btn btn-primary btn-block">Заполнить</a>
+                            <h4 class="col-sm-6 col-md-4">Вопросы</h4>
+                            <p class="text-center col-sm-7 col-lg-6"><a href="/question" class="btn btn-primary btn-block">Заполнить</a>
                             </p>
                         </div>
                         <tr th:each="i : ${#numbers.sequence(profileQuestion.getQuestionsDto().size() - 1, 0, -1)}">

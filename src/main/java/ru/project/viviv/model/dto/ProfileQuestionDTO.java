@@ -8,4 +8,5 @@ import java.util.List;
 public class ProfileQuestionDTO {
     private ProfileDTO profileDto;
     private List<QuestionDTO> questionsDto;
+    private String email;
 }

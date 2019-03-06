@@ -7,16 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import ru.project.viviv.common.Converter;
+import ru.project.viviv.model.dto.ProfileDTO;
 import ru.project.viviv.model.dto.QuestionFillDTO;
-import ru.project.viviv.model.entity.Answer;
-import ru.project.viviv.model.entity.Question;
-import ru.project.viviv.model.entity.User;
-import ru.project.viviv.model.entity.UserQuestion;
+import ru.project.viviv.model.entity.*;
 import ru.project.viviv.model.service.AnswerService;
+import ru.project.viviv.model.service.ProfileService;
 import ru.project.viviv.model.service.QuestionService;
 import ru.project.viviv.model.service.UserService;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,10 @@ public class ProfileController {
     private QuestionService questionService;
     @Autowired
     private AnswerService answerService;
+    @Autowired
+    private Converter converter;
+    @Autowired
+    private ProfileService profileService;
 
     @Value("${question.size}")
     private int questionSize;
@@ -66,7 +71,26 @@ public class ProfileController {
     public ModelAndView fillingQuestions(Principal principal) {
         QuestionFillDTO questionFillDto = new QuestionFillDTO();
         questionFillDto.setUsername(principal.getName());
-//        questionFillDto.setFilledCount(profileQuestionDto.getQuestionsDto() == null ? 1 : (profileQuestionDto.getQuestionsDto().size() + 1));
         return addQuestion(questionFillDto);
     }
+
+    @GetMapping(value = "editProfile")
+    public ModelAndView editProfile(Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        ProfileDTO profileDto = converter.profileToDto(user.getProfile());
+        return new ModelAndView("profile-edit", "profileDto", profileDto);
+    }
+
+    @PostMapping(value = "editProfile")
+    public ModelAndView updateProfile(@ModelAttribute(value = "profileDto") ProfileDTO profileDto, Principal principal) {
+        Profile profile = userService.findByUsername(principal.getName()).getProfile();
+        profile.setBirthDate(LocalDate.parse(profileDto.getBirthDate()));
+        profile.setFirstname(profileDto.getFirstname());
+        profile.setLastname(profileDto.getLastname());
+        profile.setSex(profileDto.getCharSex() == null ? null : profileDto.getCharSex() == 'М' ? 0 : 1);
+        profile.setPhone(profileDto.getPhone());
+        profileService.saveProfile(profile);
+        return new ModelAndView("redirect:/" + principal.getName());
+    }
+
 }
